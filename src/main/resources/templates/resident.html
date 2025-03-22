@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resident Dashboard</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="resident.css">
+    <style>
+        /* Custom styles */
+        .navbar {
+            background-color: #007bff; /* Blue background */
+        }
+        .navbar-brand, .nav-link {
+            color: white !important; /* White text */
+        }
+        .nav-link:hover {
+            color: #f8f9fa !important; /* Light gray on hover */
+        }
+        .content {
+            padding: 20px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Navigation Bar -->
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">Resident Portal</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/" id="homeBtn">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/report_issue" id="repairIssueBtn">Repair Issue</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/track_repair" id="trackRepairsBtn">Track Repairs</a>
+                    </li>
+                </ul>
+                <ul class="navbar-nav ms-auto">
+	                <li class="nav-item">
+				        <span class="nav-link text-muted" th:if="${session.email}">Welcome, <b th:text="${session.email}"></b></span>
+				    </li>
+			    </ul>
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/logout">Logout</a>
+                    </li>
+                </ul>
+                <ul class="navbar-nav ms-auto">
+				    <li class="nav-item">
+				        <a class="nav-link btn btn-outline-danger text-white px-3 mx-2" href="/delete"
+				           onclick="return confirm('Are you sure you want to delete your account? This action cannot be undone!');">
+				            <i class="fas fa-user-slash"></i> Delete Account
+				        </a>
+				    </li>
+				</ul>
+                
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="content">
+        <h1>Welcome to the Resident Portal</h1>
+        <p>Use the navigation bar to report issues or track repairs.</p>
+    </div>
+
+    <!-- Bootstrap JS and dependencies -->
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>    
+</body>
+</html>
