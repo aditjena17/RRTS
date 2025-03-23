@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Track Repairs - RoadCare</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="home.css">
+    <style>
+        /* Navbar Styling */
+        .navbar {
+            background: linear-gradient(#00203ff2, rgba(31, 58, 147, 0.9));
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        .navbar-brand {
+            font-size: 1.5rem;
+            color: white !important;
+            font-weight: bold;
+        }
+        .nav-link {
+            color: white !important;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+        .nav-link:hover {
+            color: #ffd700 !important;
+        }
+        .btn-logout {
+            background-color: #e74c3c;
+            color: white !important;
+            border-radius: 20px;
+            transition: all 0.3s ease-in-out;
+        }
+        .btn-logout:hover {
+            background-color: #c0392b;
+            box-shadow: 0 0 10px rgba(231, 76, 60, 0.6);
+        }
+        table {
+        width: 100%;
+        border-collapse: collapse;
+        border-radius: 12px;
+        overflow: hidden;
+        background: white;
+        box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.1);
+    }
+
+    th, td {
+        padding: 14px;
+        text-align: left;
+    }
+
+    thead {
+        background: linear-gradient(135deg, #007bff, #0056b3);
+        color: white;
+        font-weight: bold;
+    }
+
+    tbody tr:nth-child(odd) {
+        background-color: #f9f9f9;
+    }
+
+    tbody tr:nth-child(even) {
+        background-color: #ffffff;
+    }
+
+    tbody tr:hover {
+        background-color: #e3f2fd;
+        transition: 0.3s;
+    }
+
+    th {
+        border-bottom: 2px solid #dee2e6;
+    }
+
+    td {
+        border-bottom: 1px solid #dee2e6;
+    }
+    </style>
+    
+</head>
+<body>
+
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg">
+	    <div class="container">
+	        <a class="navbar-brand" href="/"><i class="fas fa-road"></i> RoadCare</a>
+	        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+	            <span class="navbar-toggler-icon"></span>
+	        </button>
+	        <div class="collapse navbar-collapse">
+	            <!-- Left-aligned links -->
+	            <ul class="navbar-nav me-auto">
+	                <li class="nav-item">
+	                    <a class="nav-link" href="/"><i class="fas fa-home"></i> Home</a>
+	                </li>
+	                <li class="nav-item">
+	                    <a class="nav-link" href="/report_issue"><i class="fas fa-tools"></i> Issue Repair</a>
+	                </li>
+	            </ul>
+	            <!-- Right-aligned Logout button -->
+	            <ul class="navbar-nav ms-auto">
+	                <li class="nav-item">
+	                    <a class="nav-link btn btn-logout px-3" href="/logout"><i class="fas fa-sign-out-alt"></i> Logout</a>
+	                </li>
+	            </ul>
+	        </div>
+	    </div>
+	</nav>
+
+
+    <div class="container py-5">
+        <h2 class="text-center mb-4">Welcome to RoadCare - Track Repairs</h2>
+        <!-- 
+        <p class="text-center text-muted">Easily track ongoing and completed road repair tasks in your area. Use the search and filter options below to find specific repairs.</p>
+         -->
+        
+        <div class="row mb-4">
+            <div class="col-md-6">
+                <select id="filterType" class="form-select">
+                    <option value="0">Filter by City</option>
+                    <option value="1">Filter by Issue Type</option>
+                    <option value="2">Filter by Severity</option>
+                    <option value="3">Filter by Status</option>
+                </select>
+            </div>
+            <div class="col-md-4">
+                <input type="text" id="filterInput" class="form-control" placeholder="Enter search term">
+            </div>
+            <div class="col-md-2">
+                <button class="btn btn-secondary w-100" onclick="clearFilter()">Clear Filter</button>
+            </div>
+        </div>
+
+        <!-- Repair Status List -->
+        <div id="repair-list" class="mt-4">
+            <table border="1">
+		        <thead>
+		            <tr>
+		            	<th>City</th>
+		                <th>Location</th>
+		                <th>Issue Type</th>
+		                <th>Severity</th>
+		                <th>Description</th>
+		                <th>Status</th>
+		                <th>Issue Date</th>
+		                <th>Completion Date</th>
+		            </tr>
+		        </thead>
+		        <tbody id="repairTableBody">
+		            
+		        </tbody>
+		    </table>
+        </div>
+
+        <!-- Pagination -->
+        <!-- 
+        <nav aria-label="Page navigation" class="mt-4">
+            <ul class="pagination justify-content-center">
+                <li class="page-item disabled">
+                    <a class="page-link" href="#" tabindex="-1">Previous</a>
+                </li>
+                <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                <li class="page-item"><a class="page-link" href="#">2</a></li>
+                <li class="page-item"><a class="page-link" href="#">3</a></li>
+                <li class="page-item">
+                    <a class="page-link" href="#">Next</a>
+                </li>
+            </ul>
+        </nav>
+         -->
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Function to fetch repair data and populate the table
+        async function fetchRepairRequests() {
+            try {
+                const response = await fetch('/api/repairs');  // Fetch from backend
+                const data = await response.json();
+                const tableBody = document.getElementById("repairTableBody");
+                tableBody.innerHTML = ""; // Clear existing rows
+
+                // Populate table
+                data.forEach(todo => {
+                    const row = document.createElement("tr");
+                    row.innerHTML = `
+                    	<td>${todo.city}</td>
+                        <td>${todo.location}</td>
+                        <td>${todo.issueType}</td>
+                        <td>${todo.severity}</td>
+                        <td>${todo.description}</td>
+                        <td>${todo.status}</td>
+                        <td>${todo.issueDate}</td>
+                        <td>${todo.completionDate}</td>
+                    `;
+                    tableBody.appendChild(row);
+                });
+            } catch (error) {
+                console.error("Error fetching repair data:", error);
+            }
+        }
+
+        // Function to filter repairs based on dropdown selection
+        function filterRepairs() {
+            const filterType = document.getElementById("filterType").value;
+            const input = document.getElementById("filterInput").value.toLowerCase();
+            const tableRows = document.querySelectorAll("#repairTableBody tr");
+
+            tableRows.forEach(row => {
+                const columnText = row.cells[filterType].textContent.toLowerCase();
+                row.style.display = columnText.includes(input) ? "" : "none";
+            });
+        }
+
+        // Function to clear filter and show all rows
+        function clearFilter() {
+            document.getElementById("filterInput").value = "";
+            document.querySelectorAll("#repairTableBody tr").forEach(row => {
+                row.style.display = "";
+            });
+        }
+
+        // Event listener for real-time filtering
+        document.getElementById("filterInput").addEventListener("input", filterRepairs);
+
+        // Fetch data when the page loads
+        fetchRepairRequests();
+    </script>
+</body>
+</html>

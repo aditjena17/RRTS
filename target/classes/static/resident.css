@@ -1,0 +1,120 @@
+/* Container with responsive width */
+.container {
+    max-width: 75% !important;
+    margin: 0 auto;
+}
+
+/* Global color variables */
+:root {
+    --primary-color: #00203F;
+    --secondary-color: #E67E22;
+    --accent-color: #3498DB;
+    --golden-color: #FFD700;
+}
+
+/* Navbar styling */
+.navbar {
+    background-color: var(--primary-color) !important;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    padding: 0.8rem 1rem;
+}
+
+.navbar-brand i {
+    color: var(--golden-color);
+    font-size: 1.5rem;
+}
+
+/* Hero section with gradient overlay */
+.hero-section {
+    background: linear-gradient(var(--primary-color), rgba(31, 58, 147, 0.9)),
+                url('https://images.unsplash.com/photo-1530085892894-8fff66c8e3b7?auto=format&fit=crop&q=80');
+    background-size: cover;
+    background-position: center;
+    color: white;
+    padding: 4rem 0;
+    text-align: center;
+    text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+/* Custom button styling */
+.btn-custom {
+    background-color: var(--secondary-color);
+    border-radius: 25px;
+    padding: 12px 20px;
+    font-weight: bold;
+    transition: all 0.3s ease-in-out;
+    color: white;
+}
+
+.btn-custom:hover {
+    box-shadow: 0 0 15px rgba(230, 126, 34, 0.6);
+    transform: scale(1.05);
+}
+
+/* Card styling with glassmorphism effect */
+.card {
+    backdrop-filter: blur(10px);
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 12px;
+    padding: 1.5rem;
+    transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+}
+
+/* Feature section */
+.feature-icon {
+    background: #f8f9fa;
+    padding: 20px;
+    border-radius: 50%;
+    margin-bottom: 15px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Primary button styling */
+.btn-primary {
+    padding: 12px 30px;
+    border-radius: 25px;
+    background: var(--accent-color);
+    border: none;
+    color: white;
+    box-shadow: 0 4px 6px rgba(13, 110, 253, 0.2);
+    transition: all 0.3s ease;
+}
+
+.btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 8px rgba(13, 110, 253, 0.3);
+}
+
+/* Navbar Link Hover Effect */
+.nav-link {
+    position: relative;
+    padding: 8px 15px !important;
+    color: white;
+    font-weight: bold;
+    transition: color 0.3s ease;
+}
+
+.nav-link::after {
+    content: '';
+    position: absolute;
+    width: 0;
+    height: 2px;
+    bottom: 0;
+    left: 50%;
+    background-color: var(--golden-color);
+    transition: all 0.3s ease;
+}
+
+.nav-link:hover {
+    color: var(--secondary-color);
+}
+
+.nav-link:hover::after {
+    width: 100%;
+    left: 0;
+}

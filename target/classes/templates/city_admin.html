@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Allocate Resources - RoadCare</title>
+    <style>
+        body {
+            display: flex;
+            height: 100vh;
+            margin: 0;
+            font-family: 'Poppins', sans-serif;
+            background: #f4f7fc;
+        }
+        .sidebar {
+            width: 15%;
+            background: #1a202c;
+            color: white;
+            display: flex;
+            flex-direction: column;
+            padding: 20px;
+        }
+        .sidebar h1 {
+            text-align: center;
+            font-size: 26px;
+            margin-bottom: 20px;
+            font-weight: bold;
+        }
+        .sidebar a {
+            text-decoration: none;
+            color: white;
+            font-size: 18px;
+            padding: 12px;
+            display: block;
+            border-radius: 5px;
+            transition: 0.3s;
+        }
+        .sidebar a:hover {
+            background: #2d3748;
+        }
+        .logout, .delete {
+            margin-top: auto;
+            color: #e53e3e;
+            font-weight: bold;
+        }
+        .main-content {
+            flex: 1;
+            display: flex;
+            justify-content: space-around;
+            align-items: flex-start;
+            background: #f4f7fc;
+            padding: 20px;
+            gap: 20px;
+        }
+        .card {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            width: 45%;
+            min-height: 250px;
+            text-align: left;
+        }
+        .card h2 {
+            text-align: center;
+            margin-bottom: 15px;
+        }
+        .card ul {
+            list-style: none;
+            padding: 0;
+        }
+        .card ul li {
+            background: #e2e8f0;
+            padding: 10px;
+            margin-bottom: 8px;
+            border-radius: 6px;
+        }
+        table {
+		    width: 100%;
+		    border-collapse: collapse;
+		    font-size: 16px;
+		}
+		
+		th, td {
+		    padding: 12px;
+		    text-align: left;
+		}
+		
+		th {
+		    background: #1a202c;
+		    color: white;
+		    text-align: center;
+		}
+		
+		tbody tr:nth-child(even) {
+		    background: #f1f5f9;
+		}
+		
+		tbody tr:hover {
+		    background: #e2e8f0;
+		    transition: 0.3s;
+		}
+		
+		.status {
+		    font-weight: bold;
+		    text-align: center;
+		}
+		td:nth-child(2),
+		td:nth-child(3),
+		td:nth-child(4) {
+		    text-align: center;
+		}
+		.card:first-child {
+		    width: 60%; /* Increase width of Repair Requests */
+		}
+		
+		.card:last-child {
+		    width: 35%; /* Decrease width of Allocated Resources */
+		}
+    </style>
+</head>
+<body>
+    <div class="sidebar">
+        <h1>RoadCare</h1>
+        <a th:href="@{/allocate}">🔧 Allocate Resources</a>
+        <a th:href="@{/reschedule}">📅 Reschedule Repairs</a>
+        <a th:href="@{/logout}" class="logout">🚪 Logout</a>
+        <a th:href="@{/delete}" class="delete">🗑️ Delete Account</a>
+    </div>
+    <div class="main-content">
+        <div class="card">
+		    <h2>Repair Requests</h2>
+		    <div style="display: flex; gap: 10px; margin-bottom: 10px;">
+		        <select id="filterType" style="padding: 8px;">
+		            <option value="location">Filter by Location</option>
+		            <option value="severity">Filter by Severity</option>
+		            <option value="status">Filter by Status</option>
+		        </select>
+		        <input type="text" id="filterInput" placeholder="Enter search term..." onkeyup="filterRepairs()" style="flex: 1; padding: 8px;">
+		    </div>
+		    <table id="repairRequests">
+		        <thead>
+		            <tr>
+		                <th>City</th>
+		                <th>Issue Type</th>
+		                <th>Severity</th>
+		                <th>Status</th>
+		                <th>Issue Date</th>
+		                <th>Completion Date</th>
+		            </tr>
+		        </thead>
+		        <tbody>
+		            <!-- 
+		            <tr th:each="todo : ${todos}">
+		                <td th:text="${todo.location}"></td>
+		                <td th:text="${todo.issueType}"></td>		              
+		                <td th:text="${todo.severity}"></td>
+		                <td th:text="${todo.status}"></td>
+		            </tr>
+		             -->
+		        </tbody>
+		    </table>
+		</div>
+        <div class="card">
+            <h2>Allocated Resources</h2>
+		    <table id="allocatedResources">
+		        <thead>
+		            <tr>
+		                <th>City</th>
+		                <th>Manpower</th>
+		                <th>Materials</th>
+		                <th>Machines</th>
+		            </tr>
+		        </thead>
+		        <tbody>
+		            <!-- 
+		            <tr th:each="resource : ${resources}">
+		                <td th:text="${resource.city}"></td>
+		                <td th:text="${resource.manpower}"></td>		              
+		                <td th:text="${resource.materials}"></td>
+		                <td th:text="${resource.machines}"></td>
+		            </tr>
+		             -->
+		        </tbody>
+		    </table>
+        </div>
+
+    </div>
+    <script>
+	    async function fetchRepairRequests() {
+	        const response = await fetch('/api/repairs');
+	        const data = await response.json();
+	
+	        const tableBody = document.querySelector("#repairRequests tbody");
+	        tableBody.innerHTML = ""; // Clear existing rows
+	
+	        data.forEach(todo => {
+	            const row = `<tr>
+	                            <td>${todo.city}</td>
+	                            <td>${todo.issueType}</td>
+	                            <td>${todo.severity}</td>
+	                            <td>${todo.status}</td>
+	                            <td>${todo.issueDate}</td>
+	                            <td>${todo.completionDate}</td>
+	                        </tr>`;
+	            tableBody.innerHTML += row;
+	        });
+	    }
+	    // Function to filter repair requests based on selected criteria
+	    function filterRepairs() {
+	        const filterType = document.getElementById("filterType").value; // 'location', 'severity', or 'status'
+	        const input = document.getElementById("filterInput").value.toLowerCase();
+	        const tableRows = document.querySelectorAll("#repairRequests tbody tr");
+	
+	        let columnIndex;
+	        if (filterType === "location") {
+	            columnIndex = 0; // Location is in column 0
+	        } else if (filterType === "severity") {
+	            columnIndex = 2; // Severity is in column 2
+	        } else if (filterType === "status"){
+	            columnIndex = 3; // Status is in column 3
+	        }
+	
+	        tableRows.forEach(row => {
+	            const columnText = row.cells[columnIndex].textContent.toLowerCase();
+	            if (columnText.includes(input)) {
+	                row.style.display = ""; // Show row
+	            } else {
+	                row.style.display = "none"; // Hide row
+	            }
+	        });
+	    }
+	
+	    async function fetchAllocatedResources() {
+	        const response = await fetch('/api/resources');
+	        const data = await response.json();
+	
+	        const tableBody = document.querySelector("#allocatedResources tbody");
+	        tableBody.innerHTML = ""; // Clear existing rows
+	
+	        data.forEach(resource => {
+	            const row = `<tr>
+	                            <td>${resource.city}</td>
+	                            <td>${resource.manpower}</td>
+	                            <td>${resource.materials}</td>
+	                            <td>${resource.machines}</td>
+	                        </tr>`;
+	            tableBody.innerHTML += row;
+	        });
+	    }
+	
+	    // Initial data load
+	    fetchRepairRequests();
+	    fetchAllocatedResources();
+	
+	</script>
+    
+</body>
+</html>
