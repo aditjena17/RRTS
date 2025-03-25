@@ -1,34 +1,23 @@
 package com.RRTS.RRTS.classes;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.ElementCollection;
-import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
-import jakarta.persistence.Temporal;
-import jakarta.persistence.TemporalType;
+import lombok.Data;
 
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
-import org.hibernate.annotations.ManyToAny;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.DBRef;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-@Entity
-@Table(name = "todos")
+@Data
+@Document(collection = "todos")
 public class Todo {
 	@Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
     private String title; 
@@ -36,7 +25,6 @@ public class Todo {
     
     private String city;
 
-    @Column(columnDefinition = "TEXT")
     private String description;
 
     private String issueType;
@@ -45,17 +33,13 @@ public class Todo {
     
     private String status;
     
-    @Column(nullable = false)
     private LocalDate issueDate;
     
     private LocalDate completionDate;
 
-    @ElementCollection
     private List<String> images;
     
-    @ManyToOne
-    @JsonIgnore
-    @JoinColumn(name = "user_email", referencedColumnName = "email", nullable = false)
+    @DBRef
     private User user;
     
     public enum Severity{

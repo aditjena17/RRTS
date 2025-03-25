@@ -2,43 +2,33 @@ package com.RRTS.RRTS.classes;
 
 import java.util.List;
 
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.DBRef;
+import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.annotation.Nullable;
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.Table;
-@Entity
-@Table(name = "users")
+import lombok.Data;
+@Data
+@Document(collection = "users")
 public class User {
 	@Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
     private String firstName;
     private String lastName;
     
-    @Column(unique = true, nullable = false)
     private String email;
     
     private String phoneNumber;
     
     private String password;
     
-//    @Enumerated(EnumType.STRING)
-//    @Column(nullable = false)
     private String role;
     
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    @DBRef
     @JsonIgnore
     private List<Todo> todos;
     

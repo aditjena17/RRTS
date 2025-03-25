@@ -1,11 +1,12 @@
 package com.RRTS.RRTS.classes;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
-@Entity
-@Table(name = "resources")
+import lombok.Data;
+
+@Data
+@Document(collection = "resources")
 public class Resources {
 	@Id
 	private String city;
