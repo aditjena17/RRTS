@@ -15,7 +15,7 @@ import lombok.Data;
 @Document(collection = "users")
 public class User {
 	@Id
-    private int id;
+    private String id;
 
     private String firstName;
     private String lastName;
@@ -40,14 +40,6 @@ public class User {
     public String getPassword() {
     	return password;
     }
-
-	public int getId() {
-		return id;
-	}
-
-	public void setId(int id) {
-		this.id = id;
-	}
 
 	public String getFirstName() {
 		return firstName;
@@ -104,10 +96,9 @@ public class User {
 				+ "]";
 	}
 
-	public User(int id, String firstName, String lastName, String email, String phoneNumber, String password,
+	public User(String firstName, String lastName, String email, String phoneNumber, String password,
 			String role, List<Todo> todos) {
 		super();
-		this.id = id;
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.email = email;

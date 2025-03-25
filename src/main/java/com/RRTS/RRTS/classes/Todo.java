@@ -18,7 +18,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 @Document(collection = "todos")
 public class Todo {
 	@Id
-    private int id;
+    private String id;
 
     private String title; 
     private String location;
@@ -104,10 +104,9 @@ public class Todo {
 		this.user = user;
 	}
 
-	public Todo(int id, String title, String location, String description, String issueType, String severity, String status,
+	public Todo(String title, String location, String description, String issueType, String severity, String status,
 			List<String> images, User user) {
 		super();
-		this.id = id;
 		this.title = title;
 		this.location = location;
 		this.description = description;
