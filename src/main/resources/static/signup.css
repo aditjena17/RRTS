@@ -30,3 +30,11 @@
 .form-control:focus {
     box-shadow: 0 0 0 0.2rem rgba(0, 32, 63, 0.25);
 }
+.signup-card {
+    padding: 1rem; /* Reduce padding */
+    max-height: 95vh; /* Limit height */
+    overflow-y: auto; /* Allow scrolling if content exceeds */
+}
+.row.mb-3 {
+    margin-bottom: 0.5rem; /* Reduce space between name and email */
+}

@@ -14,6 +14,7 @@ public class Resources {
 	private String manpower;
 	private String materials;
 	private String machines;
+	
 	public String getCity() {
 		return city;
 	}

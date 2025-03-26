@@ -6,9 +6,11 @@ import java.util.List;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.RRTS.RRTS.classes.AuthService;
 import com.RRTS.RRTS.classes.Todo;
@@ -31,23 +33,28 @@ public class LoginController {
 	private AuthService authService;
 	private TodoRepository todoRepository;
 	
+	@RequestMapping(value = "/pre-signup", method = RequestMethod.GET)
+	public String preSignupPage() {
+		return "pre_signup";
+	}
+	
+	@RequestMapping(value = "/pre-signup", method = RequestMethod.POST)
+	public String preSignupPage(@RequestParam(value = "role") String role, ModelMap map) {
+		User user = new User();
+		user.setRole(role);
+		map.addAttribute("user", user);
+		return "signup";
+	}
+	
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public String firstPage() {
 		return "home";
 	}
 	
-	@RequestMapping("/resident")
-	public String residentPage(HttpSession session) {
-		if (session.getAttribute("email") == null) {
-            return "redirect:/login"; 
-        }
-		return "resident";
-	}
-	
 	@RequestMapping(value = "/report_issue", method = RequestMethod.GET)
     public String reportIssuePage(ModelMap map, HttpSession session) {
 		if (session.getAttribute("email") == null) {
-            return "redirect:/login"; 
+            return "redirect:/pre-login"; 
         }
 		map.addAttribute("todo", new Todo());
         return "report_issue";
@@ -56,20 +63,23 @@ public class LoginController {
 	@RequestMapping(value = "/report_issue", method = RequestMethod.POST)
     public String reportIssuePage(@ModelAttribute Todo todo, HttpSession session) {
 		String email = (String)session.getAttribute("email");
-		User user = userRepository.findByEmail(email);
 		if (email == null) {
-            return "redirect:/login"; 
+            return "redirect:/pre-login"; 
         }
+		User user = userRepository.findByEmail(email);
 		todo.setUser(user);
 		todo.setStatus("pending");
 		todo.setIssueDate(LocalDate.now());
 		switch(todo.getSeverity()) {
 			case "low":
 				todo.setCompletionDate(LocalDate.now().plusDays(3));
+				break;
 			case "medium":
 				todo.setCompletionDate(LocalDate.now().plusDays(7));
+				break;
 			case "high":
 				todo.setCompletionDate(LocalDate.now().plusDays(15));
+				break;
 		}
 		todoRepository.save(todo);
 		session.setAttribute("email", user.getEmail());
@@ -90,29 +100,27 @@ public class LoginController {
     }
 	
 	@RequestMapping("/track_repair")
-    public String trackRepairPage(ModelMap map, HttpSession session) {
-		if (session.getAttribute("email") == null) {
-            return "redirect:/login"; 
-        }
-		String email = (String) session.getAttribute("email");
-		String role = (String) session.getAttribute("role");
-		User user = userRepository.findByEmail(email);
-		
-		List<Todo> repairs = new ArrayList<>();
-		if(role.equalsIgnoreCase("resident")) {
-			repairs = todoRepository.findByUser(user);
-		}else if(role.equalsIgnoreCase("supervisor")) {
-			repairs = todoRepository.findAll();
-		}
-		
-        map.addAttribute("todos", repairs);
-        return "track_repair";
-    }
+	public String getRepairPage() {
+		return "track_repair";
+	}
 	
 	@RequestMapping("/contact")
     public String contactPage() {
         return "contact";
     }
+	
+	@RequestMapping(value="/pre-login", method=RequestMethod.GET)
+	public String preLoginPage() {
+		return "pre_login";
+	}
+	
+	@RequestMapping(value="/pre-login", method=RequestMethod.POST)
+	public String preLoginPage(@RequestParam(value="role")String role, ModelMap map) {
+		User user = new User();
+		user.setRole(role);
+		map.addAttribute("user", user);
+		return "login";
+	}
 	
 	@RequestMapping(value = "/login", method = RequestMethod.GET)
     public String loginPage(ModelMap map) {
@@ -133,13 +141,12 @@ public class LoginController {
         default:
         	session.setAttribute("email", user.getEmail());
             session.setAttribute("role", user.getRole());
-            
             switch (user.getRole().toLowerCase()) {
                 case "resident":
                     return "resident";
                 case "supervisor":
                     return "supervisor";
-                case "city_admin":
+                case "cityadmin":
                     return "city_admin";
                 case "mayor":
                     return "mayor";
@@ -152,7 +159,7 @@ public class LoginController {
 	@RequestMapping(value = "/logout", method = RequestMethod.GET)
     public String logout(HttpSession session) {
         session.invalidate();
-        return "redirect:/";
+        return "home";
     }
 	
 	@RequestMapping(value = "/signup", method = RequestMethod.GET)
@@ -169,7 +176,9 @@ public class LoginController {
 	    }
 		
 		map.addAttribute("username", user.getEmail());
+		List<Todo> todos = new ArrayList<>();
 		userRepository.save(user);
+		
 		session.setAttribute("email", user.getEmail());
         session.setAttribute("role", user.getRole());
         
@@ -178,7 +187,7 @@ public class LoginController {
                 return "resident";
             case "supervisor":
                 return "supervisor";
-            case "city_admin":
+            case "cityadmin":
                 return "city_admin";
             case "mayor":
                 return "mayor";
@@ -191,6 +200,8 @@ public class LoginController {
 	public String deleteUser(HttpSession session) {
 		String email = (String) session.getAttribute("email");
 		User user = userRepository.findByEmail(email);
+		
+		todoRepository.deleteAllByUser(user);
 		userRepository.delete(user);
 		
 		return "redirect:/logout";
