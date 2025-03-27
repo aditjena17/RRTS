@@ -9,4 +9,5 @@ public interface TodoRepository extends MongoRepository<Todo, Integer>{
 	public List<Todo> findByUser(User user);
 	public List<Todo> findAll();
 	public void deleteAllByUser(User user);
+	public Todo findById(String id);
 }

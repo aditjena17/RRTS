@@ -159,7 +159,7 @@ public class LoginController {
 	@RequestMapping(value = "/logout", method = RequestMethod.GET)
     public String logout(HttpSession session) {
         session.invalidate();
-        return "home";
+        return "redirect:/";
     }
 	
 	@RequestMapping(value = "/signup", method = RequestMethod.GET)

@@ -1,13 +1,23 @@
 package com.RRTS.RRTS.controller;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.RRTS.RRTS.classes.Resources;
 import com.RRTS.RRTS.classes.ResourcesRepository;
@@ -44,4 +54,38 @@ public class CityAdminController {
 		resourcesRepository.save(resources);
 		return "city_admin";
 	}
+	
+	@ResponseBody
+	@RequestMapping(value = "/api/allocate/{id}")
+	public ResponseEntity<String> allocateResources(
+	        @PathVariable String id,
+	        @RequestBody Todo allocation) {
+	    
+	    Todo request = todoRepository.findById(id);
+        request.setManpower(allocation.getManpower());
+        request.setResources(allocation.getResources());
+        request.setMachines(allocation.getMachines());
+
+        todoRepository.save(request);
+        return ResponseEntity.ok("Resources allocated successfully");
+	    
+	}
+	
+	@PostMapping("/api/updateStatus/{id}")
+	public ResponseEntity<?> updateStatus(@PathVariable String id, @RequestBody Map<String, String> payload) {
+	    Todo todo = todoRepository.findById(id);
+        todo.setStatus(payload.get("status"));
+        todoRepository.save(todo);
+        return ResponseEntity.ok("Status updated successfully");
+	}
+	
+	@PostMapping("/api/updateDates/{id}")
+	public ResponseEntity<?> updateDates(@PathVariable String id, @RequestBody Map<String, String> payload) {
+	    Todo todo = todoRepository.findById(id);
+        todo.setIssueDate(LocalDate.parse(payload.get("issueDate"), DateTimeFormatter.ISO_LOCAL_DATE));
+        todo.setCompletionDate(LocalDate.parse(payload.get("completionDate"), DateTimeFormatter.ISO_LOCAL_DATE));
+        todoRepository.save(todo);
+        return ResponseEntity.ok("Dates updated successfully");
+	}
+
 }

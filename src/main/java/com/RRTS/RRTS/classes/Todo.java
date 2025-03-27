@@ -19,7 +19,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 @Data
 @Getter
 @Setter
-@Document(collection = "todos")
+@Document(collection = "Complaints")
 public class Todo {
 	@Id
     private String id;
@@ -33,7 +33,9 @@ public class Todo {
     private LocalDate issueDate;    
     private LocalDate completionDate;
     private List<String> images;
-    
+    private String manpower="";
+    private String resources="";
+    private String machines="";
     
     @DBRef
     private User user;  
@@ -114,6 +116,24 @@ public class Todo {
 	}
 	public User getUser() {
 		return user;
+	}
+	public void setManpower(String manpower) {
+		this.manpower = manpower;
+	}
+	public void setResources(String resources) {
+		this.resources = resources;
+	}
+	public void setMachines(String machines) {
+		this.machines = machines;
+	}
+	public String getManpower() {
+		return manpower;
+	}
+	public String getResources() {
+		return resources;
+	}
+	public String getMachines() {
+		return machines;
 	}
     
 }
