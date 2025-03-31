@@ -1,105 +1,314 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Repair Reports</title>
-    <link rel="stylesheet" href="demo.css">
+    <title>Track Repairs - RoadCare</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="home.css">
+    <style>
+        /* Navbar Styling */
+        .navbar {
+            background: linear-gradient(#00203ff2, rgba(31, 58, 147, 0.9));
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        .navbar-brand {
+            font-size: 1.5rem;
+            color: white !important;
+            font-weight: bold;
+        }
+        .nav-link {
+            color: white !important;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+        .nav-link:hover {
+            color: #ffd700 !important;
+        }
+        .btn-logout {
+            background-color: #e74c3c;
+            color: white !important;
+            border-radius: 20px;
+            transition: all 0.3s ease-in-out;
+        }
+        .btn-logout:hover {
+            background-color: #c0392b;
+            box-shadow: 0 0 10px rgba(231, 76, 60, 0.6);
+        }
+	    .filters select, .filters button {
+	        min-width: 180px;
+	    }
+	
+	    .filters {
+	        background: #f8f9fa;
+	        padding: 15px;
+	        border-radius: 10px;
+	        box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.1);
+	    }
+	
+	    .card-container {
+	        display: flex;
+	        flex-wrap: wrap;
+	        justify-content: center;
+	        gap: 2px;
+	    }
+	
+	    .card {
+		    width: 100%;
+		    max-width: 2000px;
+		    border-radius: 12px;
+		    box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+		    transition: transform 0.2s ease-in-out;
+		    background: linear-gradient(#00203ff2, rgba(31, 58, 147, 0.9));
+		    padding: 20px;
+		    display: grid;
+		    grid-template-columns: repeat(3, 1fr); /* 3-column layout */
+		    gap: 15px;
+		    align-items: center;
+		    text-align: center;
+		    border: 1px solid #ddd;
+    		backdrop-filter: blur(5px);
+    		color: white;
+		}
+		
+		.card:hover {
+		    transform: scale(1.03);
+		    box-shadow: 0px 6px 16px rgba(0, 0, 0, 0.15);
+		}
+	
+	    .card h3 {
+		    font-size: 1.6rem; /* Slightly larger for better visibility */
+		    font-weight: bold;
+		    margin-bottom: 12px; /* Increased margin for better spacing */
+		    color: black; /* Ensures good contrast against dark background */
+		    text-transform: capitalize; /* Capitalize first letter of each word */
+		    letter-spacing: 0.5px; /* Slight spacing for readability */
+		    background: linear-gradient(200deg, #ff7300, #fdc830);
+		    padding: 10px 15px; /* Padding for better appearance */
+		    border-radius: 8px; /* Soft rounded corners */
+		    display: inline-block; /* Keeps background wrapping around text */
+		}
+	
+	    .card .info {
+	        display: flex;
+	        justify-content: space-between;
+	        font-size: 0.9rem;
+	        margin-bottom: 4px;
+	    }
+	
+	    .card .status {
+	        font-weight: bold;
+	        padding: 3px 6px;
+	        border-radius: 5px;
+	        font-size: 0.85rem;
+	    }
+	
+	    .status {
+		    font-weight: bold;
+		    padding: 3px 8px;
+		    border-radius: 5px;
+		}
+		
+		.status.completed {
+		    background-color: #28a745; /* Green */
+		    color: white;
+		}
+		
+		.status.pending {
+		    background-color: #dc3545; /* Red */
+		    color: white;
+		}
+		
+		.status.in-progress {
+		    background-color: #007bff; /* Blue */
+		    color: white;
+		}
+		
+		body{
+			background:#D5F9F8;
+		}
+		
+    </style>
+    
 </head>
 <body>
-    <div class="container">
-        <header>
-            <h1>Repair Reports</h1>
-            <a href="{{ url_for('mdashboard') }}" class="back-button"><i class="fas fa-arrow-left"></i> Back to Dashboard</a>
-        </header>
-        
-        <div class="filters">
-            <select id="priorityFilter">
-                <option value="all">All Priorities</option>
-                <option value="High">High</option>
-                <option value="Medium">Medium</option>
-                <option value="Low">Low</option>
-            </select>
-            <select id="statusFilter">
-                <option value="all">All Status</option>
-                <option value="In Progress">In Progress</option>
-                <option value="Completed">Completed</option>
-                <option value="Pending">Pending</option>
-            </select>
-            <button onclick="fetchReports()">Apply Filters</button>
-        </div>
-        
-        <div class="table-container">
-            <table>
-                <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Location</th>
-                        <th>Supervisor</th>
-                        <th>Status</th>
-                        <th>Priority</th>
-                        <th>Start Date</th>
-                        <th>Completion Date</th>
-                        <th>Estimated Cost</th>
-                        <th>Repair Type</th>
-                        <th>Materials</th>
-                        <th>Comments</th>
-                        <th>Images</th>
-                    </tr>
-                </thead>
-                <tbody id="reportsList"></tbody>
-            </table>
-        </div>
-    </div>
-    
+
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg">
+	    <div class="container">
+	        <a class="navbar-brand" href="/"><i class="fas fa-road"></i> RoadCare</a>
+	        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+	            <span class="navbar-toggler-icon"></span>
+	        </button>
+	        <div class="collapse navbar-collapse">
+	            <!-- Left-aligned links -->
+	            <ul class="navbar-nav me-auto">
+	                <li class="nav-item">
+	                    <a class="nav-link" href="/"><i class="fas fa-home"></i> Home</a>
+	                </li>
+	                <li class="nav-item">
+	                    <a class="nav-link" href="/report_issue"><i class="fas fa-tools"></i> Report Issue</a>
+	                </li>
+	                <li class="nav-item">
+				        <a class="nav-link" href="/track_repair"><i class="fas fa-map-marker-alt"></i> Track Repairs</a>
+				    </li>
+				    <li class="nav-item">
+				        <a class="nav-link" href="/contact"><i class="fas fa-envelope"></i> Contact</a>
+				    </li>
+	            </ul>
+	            
+	            <!-- Right-aligned Logout button -->
+	            <ul class="navbar-nav ms-auto">
+	                <li class="nav-item">
+	                    <a class="nav-link btn btn-logout px-3" href="/logout"><i class="fas fa-sign-out-alt"></i> Logout</a>
+	                </li>
+	            </ul>
+	        </div>
+	    </div>
+	</nav>
+
+
+    <div class="container py-5">
+	    <h2 class="text-center mb-4 text-primary fw-bold">Welcome to RoadCare - Track Repairs</h2>
+	    <p class="text-center text-muted fs-5" >
+	        Easily track ongoing and completed road repair tasks in your area.<br>
+	        Use the search and filter options below to find specific repairs.
+	    </p>
+	
+	    <!-- Filter Section -->
+	    <div class="filters d-flex flex-wrap justify-content-center gap-3 mb-4">
+	        <select id="cityFilter" class="form-select w-auto">
+	            <option value="">🌆 All Cities</option>
+	        </select>
+	
+	        <select id="issueTypeFilter" class="form-select w-auto">
+	            <option value="">🚧 All Issue Types</option>
+	        </select>
+	
+	        <select id="severityFilter" class="form-select w-auto">
+	            <option value="">⚠️ All Severity Levels</option>
+	        </select>
+	
+	        <select id="statusFilter" class="form-select w-auto">
+	            <option value="">✅ All Status</option>
+	        </select>
+	
+	        <button onclick="clearFilters()" class="btn btn-danger">
+	             Clear Filters
+	        </button>
+	    </div>
+	
+	    <!-- Repair Status List -->
+	    <div class="card-container row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4" id="repairCardContainer">
+	        <!-- Cards will be inserted here dynamically -->
+	    </div>
+	</div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        async function fetchReports() {
-    const priority = document.getElementById("priorityFilter").value;
-    const status = document.getElementById("statusFilter").value;
-    
-    try {
-        const response = await fetch("/get_repairs");
-        const data = await response.json();
-        const tableBody = document.getElementById("reportsList");
-        tableBody.innerHTML = "";
+        // Function to fetch repair data and populate the table
+        let allTodos = [];
+        
+        document.addEventListener("DOMContentLoaded", () => {
+		    fetchTodos();
+		});
+        
+		function fetchTodos() {
+		    fetch("/api/repairs") // Ensure the endpoint is correct
+		        .then(response => response.json())
+		        .then(data => {
+		            allTodos = data;
+		            populateFilters(data); // Populate filter dropdowns
+		            generateCards(data);
+		        })
+		        .catch(error => console.error("Error fetching todos:", error));
+		}
+		
+		function generateCards(repairIssues) {
+			console.log("Generating cards for:", repairIssues);
+		    const container = document.getElementById("repairCardContainer");
+		    container.innerHTML = ""; // Clear existing content
+		
+		    repairIssues.forEach((todo, index) => {
+		        const card = document.createElement("div");
+		        card.classList.add("card");
+		
+		        card.innerHTML = `
+		            <h3>${index + 1}. ${todo.city}</h3>
+		            <p><strong>Issue Type:</strong> ${todo.issueType}</p>
+		            <p><strong>Severity:</strong> ${todo.severity}</p>
+		            <p><strong>Status:</strong> <span class="status ${todo.status.toLowerCase().replace(" ", "-")}">${todo.status}</span></p>
+		            <p><strong>Issue Title:</strong> ${todo.title}</p>
+		            <p><strong>Location:</strong> ${todo.location}</p>
+		            <p><strong>Description:</strong> ${todo.description}</p>
+		            <p><strong>Issue Date:</strong> ${todo.issueDate}</p>
+		            <p><strong>Projected End Date:</strong> ${todo.completionDate || "N/A"}</p>
+		        `;
+		
+		        container.appendChild(card);
+		    });
+		}
+		
+		function populateDropdown(dropdown, items, label) {
+	        //dropdown.innerHTML = `<option value="">All ${label}</option>`; // Default option
+	        items.forEach(item => {
+	            const option = document.createElement("option");
+	            option.value = item;
+	            option.textContent = item;
+	            dropdown.appendChild(option);
+	        });
+	    }
+		
+		function populateFilters(todos) {
+		    const cityFilter = document.getElementById("cityFilter");
+		    const issueTypeFilter = document.getElementById("issueTypeFilter");
+		    const severityFilter = document.getElementById("severityFilter");
+		    const statusFilter = document.getElementById("statusFilter");
+		
+		    // Helper function to populate dropdowns		 
+		
+		    // Populate filters with unique values
+		    populateDropdown(cityFilter, [...new Set(todos.map(todo => todo.city))]);
+		    populateDropdown(issueTypeFilter, [...new Set(todos.map(todo => todo.issueType))]);
+		    populateDropdown(severityFilter, ["Low", "Medium", "High"]);
+		    populateDropdown(statusFilter, ["Pending", "In Progress", "Completed"]);
+		
+		    // Attach event listeners to apply filters instantly
+		    cityFilter.addEventListener("change", applyFilters);
+		    issueTypeFilter.addEventListener("change", applyFilters);
+		    severityFilter.addEventListener("change", applyFilters);
+		    statusFilter.addEventListener("change", applyFilters);
+		}
+		function applyFilters() {
+		    const cityFilter = document.getElementById("cityFilter").value;
+		    const issueTypeFilter = document.getElementById("issueTypeFilter").value;
+		    const severityFilter = document.getElementById("severityFilter").value;
+		    const statusFilter = document.getElementById("statusFilter").value;
+		
+		    const filteredTodos = allTodos.filter(todo => {
+		        return (
+		            (cityFilter === "" || todo.city === cityFilter) &&
+		            (issueTypeFilter === "" || todo.issueType === issueTypeFilter) &&
+		            (severityFilter === "" || todo.severity === severityFilter) &&
+		            (statusFilter === "" || todo.status === statusFilter)
+		        );
+		    });
+		
+		    generateCards(filteredTodos);
+		}
+		
+		function clearFilters() {
+		    document.getElementById("cityFilter").value = "";
+		    document.getElementById("issueTypeFilter").value = "";
+		    document.getElementById("severityFilter").value = "";
+		    document.getElementById("statusFilter").value = "";
+		
+		    generateCards(allTodos); // Show all todos again
+		}
 
-        // Apply filters before rendering
-        const filteredData = data.filter(report => {
-            return (priority === "all" || report.priority === priority) &&
-                   (status === "all" || report.repair_status === status);
-        });
-
-        filteredData.forEach(report => {
-            const row = document.createElement("tr");
-            row.innerHTML = `
-                <td>${report._id}</td>
-                <td>${report.location}</td>
-                <td>${report.supervisor_name}</td>
-                <td>${report.repair_status}</td>
-                <td>${report.priority}</td>
-                <td>${new Date(report.start_date).toLocaleDateString()}</td>
-                <td>${report.completion_date ? new Date(report.completion_date).toLocaleDateString() : "N/A"}</td>
-                <td>${report.estimated_cost}</td>
-                <td>${report.repair_type}</td>
-                <td>${report.materials_used.join(", ")}</td>
-                <td>${report.comments}</td>
-                <td>
-                    ${report.images.map(img => `<a href="${img}" target="_blank">View</a>`).join(" | ")}
-                </td>
-            `;
-            tableBody.appendChild(row);
-        });
-
-    } catch (error) {
-        console.error("Error fetching repair reports:", error);
-    }
-}
-
-// Fetch reports on page load
-document.addEventListener("DOMContentLoaded", fetchReports);
-
+        
     </script>
 </body>
 </html>

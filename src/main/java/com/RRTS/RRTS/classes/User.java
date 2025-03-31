@@ -27,10 +27,8 @@ public class User {
     private String phoneNumber;    
     private String password;    
     
-    private String city;
-    
-    private String state;
-    
+    private String city;    
+    private String state;    
     private String role;
     
 	public String getId() {

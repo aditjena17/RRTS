@@ -9,27 +9,8 @@
     <link rel="stylesheet" href="report_issue.css">
     <style>
 	    body {
-	        padding-top: 60px; /* Adjust based on navbar height */
-	    }
-	
-	    /* Custom Navbar Styling */
-	    .custom-navbar {
-	        background: linear-gradient(45deg, #FFA500, #FFD700);
-	        border-bottom: 3px solid #ff8c00;
-	    }
-	
-	    /* Navbar links styling */
-	    .custom-navbar .nav-link {
-	        font-size: 18px;
-	        font-weight: bold;
-	        transition: color 0.3s ease-in-out;
-	    }
-	
-	    /* Hover effect for navigation links */
-	    .custom-navbar .nav-link:hover {
-	        color: #222;
-	        text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.2);
-	    }
+	        padding-top: 30px; /* Adjust based on navbar height */
+	    }		
 	
 	    /* Stylish Logout Button */
 	    .logout-btn {
@@ -45,48 +26,59 @@
 	</style>
 </head>
 <body>		
-	<nav class="navbar navbar-expand-lg fixed-top shadow custom-navbar">
-	    <div class="container">
-	        <!-- Website Name (Left) -->
-	        <a class="navbar-brand text-dark fw-bold" href="/">
-	            <i class="fas fa-road"></i> RoadCare
-	        </a>
-	
-	        <!-- Navbar Toggler (For Mobile View) -->
-	        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-	            <span class="navbar-toggler-icon"></span>
-	        </button>
-	
-	        <div class="collapse navbar-collapse">
-	            <!-- Left Links: Home & Track Repairs -->
-	            <ul class="navbar-nav me-auto">
-	                <li class="nav-item">
-	                    <a class="navbar-brand text-dark fw-bold" href="/"><i class="fas fa-home"></i> Home</a>
-	                </li>
-	                <li class="nav-item">
-	                    <a class="navbar-brand text-dark fw-bold" href="/track_repair"><i class="fas fa-tasks"></i> Track Repairs</a>
-	                </li>
-	            </ul>
-	
-	            <!-- Right Side: Logout Button -->
-	            <ul class="navbar-nav ms-auto">
-	                <li class="nav-item">
-	                    <a class="nav-link btn btn-danger text-white px-3 fw-bold shadow-lg logout-btn" href="/logout">
-	                        <i class="fas fa-sign-out-alt"></i> Logout
-	                    </a>
-	                </li>
-	            </ul>
-	        </div>
-	    </div>
-	</nav>
+	<!-- Navbar with Logo -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+        <div class="container">
+            <a class="navbar-brand d-flex align-items-center" href="/">
+                <i class="fas fa-road text-primary fs-4 me-2"></i>
+                <span class="fw-bold">RoadCare</span>
+            </a>
+            <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <a class="nav-link px-3" href="/">
+                            <i class="fas fa-home me-1"></i> Home
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link px-3 active" href="/report_issue">
+                            <i class="fas fa-tools"></i> Report Issue
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link px-3" href="/track_repair">
+                            <i class="fas fa-map-marker-alt"></i> Track Repairs
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link px-3" href="/contact">
+                            <i class="fas fa-envelope me-1"></i> Contact
+                        </a>
+                    </li>
+                </ul>
+                <div class="d-flex align-items-center">
+                    <div class="d-flex align-items-center me-3">
+                        <i class="fas fa-user-circle text-primary me-2 fs-5"></i>
+                        <span class="text-white">Welcome, <span th:text="${session.email}"></span>!</span>
+                    </div>
+                    <a href="/logout" class="btn btn-outline-primary btn-sm text-light">
+                        <i class="fas fa-sign-out-alt me-1 text-light"></i> Logout
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
 
 <!-- Add margin to body to prevent content overlap due to fixed navbar -->
 
 
 	
-    <div class="container py-5">
+    <div class="container mt-5">
         <div class="row justify-content-center">
-            <div class="col-md-8">
+            <div class="col-md-9">
                 <div class="card shadow">
                     <div class="card-header text-white">
                         <h3 class="mb-0"><i class="fas fa-exclamation-triangle me-2"></i>Report Road Issue</h3>
@@ -100,15 +92,57 @@
                                     placeholder="Brief description of the issue">
                             </div>
 							
-							<!-- City Input -->
+							<!-- Location Input -->
 							<div class="mb-3">
-							    <label for="city" class="form-label">City</label>
-							    <div class="input-group">
-							        <span class="input-group-text"><i class="fas fa-city"></i></span>
-							        <input type="text" class="form-control" id="city" name="city" th:field="*{city}" required 
-							            placeholder="Enter city name">
+							    <div class="row">							    
+							    	<!-- State Dropdown -->
+							        <div class="col-md-6">
+							            <label for="state" class="form-label">State</label>
+							            <select class="form-select" id="state" name="state" required>
+							                <option value="" selected disabled>Select State</option>
+							                <option value="AP">Andhra Pradesh</option>
+							                <option value="AR">Arunachal Pradesh</option>
+							                <option value="AS">Assam</option>
+							                <option value="BR">Bihar</option>
+							                <option value="CT">Chhattisgarh</option>
+							                <option value="GA">Goa</option>
+							                <option value="GJ">Gujarat</option>
+							                <option value="HR">Haryana</option>
+							                <option value="HP">Himachal Pradesh</option>
+							                <option value="JH">Jharkhand</option>
+							                <option value="KA">Karnataka</option>
+							                <option value="KL">Kerala</option>
+							                <option value="MP">Madhya Pradesh</option>
+							                <option value="MH">Maharashtra</option>
+							                <option value="MN">Manipur</option>
+							                <option value="ML">Meghalaya</option>
+							                <option value="MZ">Mizoram</option>
+							                <option value="NL">Nagaland</option>
+							                <option value="OR">Odisha</option>
+							                <option value="PB">Punjab</option>
+							                <option value="RJ">Rajasthan</option>
+							                <option value="SK">Sikkim</option>
+							                <option value="TN">Tamil Nadu</option>
+							                <option value="TG">Telangana</option>
+							                <option value="TR">Tripura</option>
+							                <option value="UP">Uttar Pradesh</option>
+							                <option value="UT">Uttarakhand</option>
+							                <option value="WB">West Bengal</option>
+							            </select>
+							        </div>
+							    	
+							        <!-- City Input -->
+							        <div class="col-md-6">
+							            <label for="city" class="form-label">City</label>
+							            <div class="input-group">
+							                <span class="input-group-text"><i class="fas fa-city"></i></span>
+							                <input type="text" class="form-control" id="city" name="city" th:field="*{city}" required 
+							                    placeholder="Enter city name">
+							            </div>
+							        </div>
 							    </div>
 							</div>
+
 							
 							
                             <!-- Location Details -->
@@ -133,11 +167,11 @@
                                 <label for="issue_type" class="form-label">Issue Type</label>
                                 <select class="form-select" id="issue_type" name="issue_type" th:field="*{issueType}" required>
                                     <option value="" selected disabled>Select issue type</option>
-                                    <option value="pothole">Pothole</option>
-                                    <option value="crack">Road Crack</option>
-                                    <option value="drainage">Drainage Issue</option>
-                                    <option value="signage">Missing/Damaged Road Signs</option>
-                                    <option value="other">Other</option>
+                                    <option value="Pothole">Pothole</option>
+                                    <option value="Crack">Road Crack</option>
+                                    <option value="Drainage">Drainage Issue</option>
+                                    <option value="Signage">Missing/Damaged Road Signs</option>
+                                    <option value="Other">Other</option>
                                 </select>
                             </div>
 
@@ -145,14 +179,14 @@
                             <div class="mb-3">
                                 <label class="form-label">Severity Level</label>
                                 <div class="btn-group w-100" role="group">
-                                    <input type="radio" class="btn-check" name="severity" id="low" value="low" th:field="*{severity}">
-                                    <label class="btn btn-outline-success" for="low">Low</label>
+                                    <input type="radio" class="btn-check" name="severity" id="Low" value="Low" th:field="*{severity}">
+                                    <label class="btn btn-outline-success" for="Low">Low</label>
 
-                                    <input type="radio" class="btn-check" name="severity" id="medium" value="medium" th:field="*{severity}">
-                                    <label class="btn btn-outline-warning" for="medium">Medium</label>
+                                    <input type="radio" class="btn-check" name="severity" id="Medium" value="Medium" th:field="*{severity}">
+                                    <label class="btn btn-outline-warning" for="Medium">Medium</label>
 
-                                    <input type="radio" class="btn-check" name="severity" id="high" value="high" th:field="*{severity}">
-                                    <label class="btn btn-outline-danger" for="high">High</label>
+                                    <input type="radio" class="btn-check" name="severity" id="High" value="High" th:field="*{severity}">
+                                    <label class="btn btn-outline-danger" for="High">High</label>
                                 </div>
                             </div>                             
 

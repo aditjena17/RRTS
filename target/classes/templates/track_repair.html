@@ -43,39 +43,39 @@
         overflow: hidden;
         background: white;
         box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.1);
-    }
-
-    th, td {
-        padding: 14px;
-        text-align: left;
-    }
-
-    thead {
-        background: linear-gradient(135deg, #007bff, #0056b3);
-        color: white;
-        font-weight: bold;
-    }
-
-    tbody tr:nth-child(odd) {
-        background-color: #f9f9f9;
-    }
-
-    tbody tr:nth-child(even) {
-        background-color: #ffffff;
-    }
-
-    tbody tr:hover {
-        background-color: #e3f2fd;
-        transition: 0.3s;
-    }
-
-    th {
-        border-bottom: 2px solid #dee2e6;
-    }
-
-    td {
-        border-bottom: 1px solid #dee2e6;
-    }
+	    }
+	
+	    th, td {
+	        padding: 14px;
+	        text-align: left;
+	    }
+	
+	    thead {
+	        background: linear-gradient(135deg, #007bff, #0056b3);
+	        color: white;
+	        font-weight: bold;
+	    }
+	
+	    tbody tr:nth-child(odd) {
+	        background-color: #f9f9f9;
+	    }
+	
+	    tbody tr:nth-child(even) {
+	        background-color: #ffffff;
+	    }
+	
+	    tbody tr:hover {
+	        background-color: #e3f2fd;
+	        transition: 0.3s;
+	    }
+	
+	    th {
+	        border-bottom: 2px solid #dee2e6;
+	    }
+	
+	    td {
+	        border-bottom: 1px solid #dee2e6;
+	    }  
     </style>
     
 </head>
@@ -138,11 +138,11 @@
 		        <thead>
 		            <tr>
 		            	<th>City</th>
-		                <th>Location</th>
 		                <th>Issue Type</th>
 		                <th>Severity</th>
-		                <th>Description</th>
 		                <th>Status</th>
+		                <th>Location</th>
+		                <th>Description</th>		                
 		                <th>Issue Date</th>
 		                <th>Completion Date</th>
 		            </tr>
@@ -186,11 +186,11 @@
                     const row = document.createElement("tr");
                     row.innerHTML = `
                     	<td>${todo.city}</td>
+                    	<td>${todo.issueType}</td>
+                    	<td>${todo.severity}</td>
+                    	<td>${todo.status}</td>                          
                         <td>${todo.location}</td>
-                        <td>${todo.issueType}</td>
-                        <td>${todo.severity}</td>
-                        <td>${todo.description}</td>
-                        <td>${todo.status}</td>
+                        <td>${todo.description}</td>                        
                         <td>${todo.issueDate}</td>
                         <td>${todo.completionDate}</td>
                     `;

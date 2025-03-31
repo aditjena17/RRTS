@@ -1,5 +1,9 @@
 package com.RRTS.RRTS.classes;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -9,44 +13,44 @@ import lombok.Data;
 @Document(collection = "resources")
 public class Resources {
 	@Id
-	private String city;
-	
-	private String manpower;
-	private String materials;
-	private String machines;
+	private String city;	
+	private Integer manpower;
+	private Map<String,Integer> resources = new HashMap<>();
+	private Integer machines;
 	
 	public String getCity() {
 		return city;
 	}
+
 	public void setCity(String city) {
 		this.city = city;
 	}
-	public String getManpower() {
+
+	public Integer getManpower() {
 		return manpower;
 	}
-	public void setManpower(String manpower) {
+
+	public void setManpower(Integer manpower) {
 		this.manpower = manpower;
 	}
-	public String getMaterials() {
-		return materials;
+
+	public Map<String, Integer> getResources() {
+		return resources;
 	}
-	public void setMaterials(String materials) {
-		this.materials = materials;
-	}
-	public String getMachines() {
+
+	public void setResources(List<String> resourceNames, List<Integer> resourceQuantities) {
+        for (int i = 0; i < resourceNames.size(); i++) {
+            resources.put(resourceNames.get(i), resourceQuantities.get(i));
+        }
+    }
+
+	public Integer getMachines() {
 		return machines;
 	}
-	public void setMachines(String machines) {
+
+	public void setMachines(Integer machines) {
 		this.machines = machines;
 	}
-	
-	public Resources(String city, String manpower, String materials, String machines) {
-		super();
-		this.city = city;
-		this.manpower = manpower;
-		this.materials = materials;
-		this.machines = machines;
-	}
-	
+
 	public Resources() {}
 }

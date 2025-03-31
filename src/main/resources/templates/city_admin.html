@@ -13,7 +13,7 @@
         body {
             margin: 0;
             font-family: 'Poppins', sans-serif;
-            background: #f4f7fc;
+            background: #f4f7fc;;
         }
         .navbar {
             width: 100%;
@@ -40,7 +40,7 @@
             font-size: 18px;
             padding: 10px;
             border-radius: 5px;
-            transition: 0.3s;
+            transition: color 0.3s ease-in-out;
         }
         .nav-links a:hover {
             color: #ffd700 !important;
@@ -61,7 +61,7 @@
         .main-content {
             display: flex;
             flex-direction: column;
-            align-items: left;
+            align-items: center;
             background: #f4f7fc;
             padding: 20px;
             gap: 20px;
@@ -121,174 +121,83 @@
 		    font-size: 14px;
 		    padding: 5px;
 		}
+		.table-card {
+		    display: flex;
+		    flex-direction: column;  /* Stack cards vertically */
+		    align-items: center;  /* Center the cards */
+		    gap: 15px;
+		    width: 100%;
+		}
+		
+		.table-card .card {
+		    background: white;
+		    padding: 20px;
+		    border-radius: 10px;
+		    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+		    width: 80%;  /* Make cards wider */
+		    min-height: 200px;
+		    text-align: left;
+		}
+		
+		.card-title {
+		    font-size: 20px;
+		    font-weight: bold;
+		    color: #00203F;
+		    margin-bottom: 10px;
+		}
+		
+		.card-content {
+		    font-size: 16px;
+		}
+		
+		.card-content ul {
+		    padding: 0;
+		    list-style-type: none;
+		}
+		
+		.card-content li {
+		    font-size: 15px;
+		    padding: 3px 0;
+		}
+		
+				
     </style>
 </head>
 <body>
     <div class="navbar">
-        <a class="navbar-brand" href="/"><i class="fas fa-road"></i> RoadCare</a>
+        <a class="navbar-brand" href="/city_admin"><i class="fas fa-road"></i> RoadCare</a>
         <div class="nav-links">
+        	<span>Welcome, <strong th:text="${session.email}"></strong>!</span>
             <a th:href="@{/allocate}">🔧 Allocate Resources</a>
-            <a th:href="@{/reschedule}">📅 Reschedule Repairs</a>
             <a th:href="@{/logout}" class="logout">🚪 Logout</a>
             <a th:href="@{/delete}" class="delete">🗑️ Delete Account</a>
         </div>
     </div>
     <div class="main-content">
-        <div class="card">
-            <h2>Repair Requests</h2>
-            <div style="display: flex; gap: 10px; margin-bottom: 10px;">
-                <select id="filterType" style="padding: 8px;">
-                    <option value="location">Filter by Location</option>
-                    <option value="severity">Filter by Severity</option>
-                    <option value="status">Filter by Status</option>
-                </select>
-                <input type="text" id="filterInput" placeholder="Enter search term..." onkeyup="filterRepairs()" style="flex: 1; padding: 8px;">
-            </div>
-            <table id="repairRequests">
-                <thead>
-                    <tr>
-                        <th>City</th>
-                        <th>Issue Type</th>
-                        <th>Severity</th>
-                        <th>Status</th>
-                        <th>Issue Date</th>
-                        <th>Completion Date</th>
-                        <th>Manpower</th>
-			            <th>Resources</th>
-			            <th>Machines</th>
-			            <th>Action</th>
-                    </tr>
-                </thead>
-                <tbody></tbody>
-            </table>
+    	
+        <h2>Allocated Resources to Cities</h2>
+        <div id="allocatedResourcesContainer" class="table-card">
+        
         </div>
-        <div class="card">
-            <h2>Allocated Resources</h2>
-            <table id="allocatedResources">
-                <thead>
-                    <tr>
-                        <th>City</th>
-                        <th>Manpower</th>
-                        <th>Materials</th>
-                        <th>Machines</th>
-                    </tr>
-                </thead>
-                <tbody></tbody>
-            </table>
-        </div>
+
     </div>
-    <script>
-	    async function fetchRepairRequests() {
-	        const response = await fetch('/api/repairs');
-	        const data = await response.json();
-	        const tableBody = document.querySelector("#repairRequests tbody");
-	        tableBody.innerHTML = "";
-	
-	        data.forEach(todo => {
-	            const row = document.createElement("tr");
-	
-	            row.innerHTML = `
-	                <td>${todo.city}</td>
-	                <td>${todo.issueType}</td>
-	                <td>${todo.severity}</td>
-	                
-	                <td>
-		                <select id="status-${todo.id}" class="form-select form-select-sm" onchange="updateStatus('${todo.id}')">
-		                    <option value="Pending" ${todo.status == 'Pending' ? 'selected' : ''}>Pending</option>
-		                    <option value="In Progress" ${todo.status == 'In Progress' ? 'selected' : ''}>In Progress</option>
-		                    <option value="Completed" ${todo.status == 'Completed' ? 'selected' : ''}>Completed</option>
-		                </select>
-		            </td>
-	                
-		            <td><input type="date" id="issueDate-${todo.id}" value="${todo.issueDate}" class="form-control form-control-sm" onchange="updateDates('${todo.id}')"></td>
-		            <td><input type="date" id="completionDate-${todo.id}" value="${todo.completionDate}" class="form-control form-control-sm" onchange="updateDates('${todo.id}')"></td>
-
-	                
-	                <td><input type="text" id="manpower-${todo.id}" value="${todo.manpower}" class="small-input"></td>
-	                <td><input type="text" id="resources-${todo.id}" value="${todo.resources}" class="small-input"></td>
-	                <td><input type="text" id="machines-${todo.id}" value="${todo.machines}" class="small-input"></td>
-	                <td><button onclick="allocateResources('${todo.id}')" class="btn btn-primary btn-sm">Allocate</button></td>
-	            `;
-	
-	            tableBody.appendChild(row);
-	        });
-	    }
-
-        function filterRepairs() {
-            const filterType = document.getElementById("filterType").value;
-            const input = document.getElementById("filterInput").value.toLowerCase();
-            const tableRows = document.querySelectorAll("#repairRequests tbody tr");
-            let columnIndex = filterType === "location" ? 0 : filterType === "severity" ? 2 : 3;
-            tableRows.forEach(row => {
-                const columnText = row.cells[columnIndex].textContent.toLowerCase();
-                row.style.display = columnText.includes(input) ? "" : "none";
-            });
-        }
-        async function updateDates(requestId) {
-            const issueDate = new Date(document.getElementById(`issueDate-${requestId}`).value);
-            const completionDate = new Date(document.getElementById(`completionDate-${requestId}`).value);
-
-            // Convert to UTC to avoid timezone shift
-            const payload = {
-                issueDate: issueDate.toISOString().split("T")[0],  
-                completionDate: completionDate.toISOString().split("T")[0]
-            };
-
-            const response = await fetch(`/api/updateDates/${requestId}`, {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(payload)
-            });
-
-            if (response.ok) {
-                Swal.fire({
-                    title: "Updated!",
-                    text: "Issue Date and Completion Date updated successfully.",
-                    icon: "success",
-                    confirmButtonText: "OK"
-                });
-            } else {
-                Swal.fire({
-                    title: "Error!",
-                    text: "Failed to update dates.",
-                    icon: "error",
-                    confirmButtonText: "OK"
-                });
-            }
-        }
-
-
-        async function updateStatus(requestId) {
-            const status = document.getElementById(`status-${requestId}`).value;
-
-            const response = await fetch(`/api/updateStatus/${requestId}`, {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ status })
-            });
-
-            if (response.ok) {
-                Swal.fire({
-                    title: "Updated!",
-                    text: "Status updated successfully.",
-                    icon: "success",
-                    confirmButtonText: "OK"
-                });
-            } else {
-                Swal.fire({
-                    title: "Error!",
-                    text: "Failed to update status.",
-                    icon: "error",
-                    confirmButtonText: "OK"
-                });
-            }
-        }
-
+    <script>	    
+        
         async function allocateResources(requestId) {
-        	console.log(`Allocate button clicked for requestId: ${requestId}`);
             const manpower = document.getElementById(`manpower-${requestId}`).value;
-            const resources = document.getElementById(`resources-${requestId}`).value;
             const machines = document.getElementById(`machines-${requestId}`).value;
+            
+            const resourceInputs = document.querySelectorAll(`#resources-container-${requestId} div`);
+
+            let resources = {};
+
+            resourceInputs.forEach(div => {
+                const type = div.querySelector(".resource-type").value.trim();
+                const qty = div.querySelector(".resource-qty").value.trim();
+                if (type && qty) {
+                    resources[type] = parseInt(qty, 10);
+                }
+            });
 
             const payload = { manpower, resources, machines };
             console.log("Sending Data:", payload);
@@ -298,7 +207,7 @@
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(payload)
             });
-
+			
             if (response.ok) {
                 Swal.fire({
                     title: "Success!",
@@ -306,7 +215,7 @@
                     icon: "success",
                     confirmButtonText: "OK"
                 }).then(() => {
-                    fetchAllocatedResources(); // Refresh table after confirmation
+                	location.reload(); // Refresh table after confirmation
                 });
             } else {
                 Swal.fire({
@@ -321,20 +230,35 @@
         async function fetchAllocatedResources() {
             const response = await fetch('/api/resources');
             const data = await response.json();
-            const tableBody = document.querySelector("#allocatedResources tbody");
-            tableBody.innerHTML = "";
+            const container = document.querySelector("#allocatedResourcesContainer");
+            container.innerHTML = ""; // Clear previous entries
+
             data.forEach(resource => {
-                const row = `<tr>
-                                <td>${resource.city}</td>
-                                <td>${resource.manpower}</td>
-                                <td>${resource.materials}</td>
-                                <td>${resource.machines}</td>
-                            </tr>`;
-                tableBody.innerHTML += row;
+                const card = document.createElement("div");
+                card.classList.add("card");
+
+                // Ensure resources are being correctly passed and displayed
+                const resources = resource.resources || {}; // If no resources, default to an empty object
+                const resourceList = Object.entries(resources).map(([type, qty]) => `<li>${type}: ${qty}</li>`).join("");
+
+                card.innerHTML = `
+                    <h3 class="card-title">${resource.city}</h3>
+                    <div class="card-content">
+                        <p><strong>Manpower:</strong> ${resource.manpower}</p>
+                        <p><strong>Machines:</strong> ${resource.machines}</p>
+                        <p><strong>Resources:</strong></p>
+                        <ul>
+                            ${resourceList} <!-- Dynamically added materials -->
+                        </ul>
+                    </div>
+                `;
+
+                container.appendChild(card);
             });
         }
-        fetchRepairRequests();
         fetchAllocatedResources();
+
+
     </script>
 </body>
 </html>

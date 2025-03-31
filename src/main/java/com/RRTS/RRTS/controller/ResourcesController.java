@@ -5,6 +5,12 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -37,11 +43,25 @@ public class ResourcesController {
     	User user = userRepository.findByEmail(email);
     	switch (user.getRole().toLowerCase()) {
         case "resident":
-            return todoRepository.findByUser(user);
+            return todoRepository.findByEmail(email);
         default:
             return todoRepository.findAll();
     	}    	
     }    
+    
+    @DeleteMapping("/allocate/{requestId}/delete-resource/{resourceType}")
+    public ResponseEntity<String> deleteResource(@PathVariable String requestId, @PathVariable String resourceType) {
+        Todo allocation = todoRepository.findById(requestId);
+        Map<String, Integer> resources = allocation.getResources();
+
+        if (resources.containsKey(resourceType)) {
+            resources.remove(resourceType);
+            todoRepository.save(allocation);
+            return ResponseEntity.ok("Resource deleted successfully.");
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Resource not found.");
+        }
+    }
 
     @RequestMapping("/resources")
     public List<Resources> getAllocatedResources() {
@@ -67,5 +87,11 @@ public class ResourcesController {
         ));
 
         return stats;
+    }
+    
+    @RequestMapping("/todos")
+    public List<Todo> getTodosByCity(HttpSession session) {
+    	String city = (String)session.getAttribute("city");
+        return todoRepository.findByCity(city);
     }
 }

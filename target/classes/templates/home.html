@@ -6,9 +6,14 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="home.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+    	.hero-section {
+		    margin-top: 0px; /* Push content down to avoid overlapping */
+		}
+    </style>
 </head>
 <body class="bg-light">
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
         <div class="container">
             <a class="navbar-brand" href=""><i class="fas fa-road"></i> RoadCare</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
@@ -33,8 +38,9 @@
 				    </div>
 				
 				    <div th:if="${session.email != null}">
-				        <span class="text-white">Welcome, <span th:text="${session.email}"></span>!</span>
-				        <a th:href="@{/logout}" class="btn btn-outline-light">Logout</a>
+				        <span class="text-white">Welcome, <strong><span th:text="${session.firstName}"></span></strong>!</span>
+				        <a th:href="@{/logout}" class="btn btn-outline-light ms-4 me-2"><i class="fas fa-sign-out-alt me-2"></i>Logout</a>
+				        <a th:href="@{/delete}" class="btn btn-outline-danger" onclick="confirmDelete(event)"><i class="fas fa-trash-alt me-2"></i>Delete Account</a>
 				    </div>
 				</div>
             </div>
@@ -240,5 +246,15 @@
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+    	function confirmDelete(event) {
+    	    event.preventDefault();
+    	    let userConfirmed = confirm("Are you sure you want to delete your account? This action cannot be undone.");
+    	    if (userConfirmed) {
+    	        window.location.href = "/delete-account";
+    	    }
+    	}
+	    
+	</script>
 </body>
 </html>

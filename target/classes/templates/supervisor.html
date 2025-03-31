@@ -3,70 +3,456 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Supervisor Dashboard</title>
-    <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="resident.css">
+    <title>Allocate Resources - RoadCare</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">    
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    
+    <link rel="stylesheet" href="home.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    
     <style>
-        /* Custom styles */
+        body {
+            margin: 0;
+            font-family: 'Poppins', sans-serif;
+            background: #D5F9F8;
+        }
         .navbar {
-            background-color: #007bff; /* Blue background */
+            width: 100%;
+            background: linear-gradient(#00203ff2, rgba(31, 58, 147, 0.9));
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            color: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px 15px;
         }
-        .navbar-brand, .nav-link {
-            color: white !important; /* White text */
+        .navbar h1 {
+            font-size: 26px;
+            font-weight: bold;
         }
-        .nav-link:hover {
-            color: #f8f9fa !important; /* Light gray on hover */
+        .nav-links {
+            color: white !important;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+        .nav-links a {
+            text-decoration: none;
+            color: white;
+            font-size: 18px;
+            padding: 10px;
+            border-radius: 5px;
+            transition: color 0.3s ease-in-out;
+        }
+        .nav-links a:hover {
+            color: #ffd700 !important;
+        }
+        .navbar-brand {
+            font-size: 1.5rem;
+            color: white !important;
+            font-weight: bold;
         }
         .content {
             padding: 20px;
             text-align: center;
         }
+        .logout, .delete {
+            color: #e53e3e;
+            font-weight: bold;
+        }
+        .main-content {
+            display: flex;
+            flex-direction: column;
+            align-items: left;
+            background: #D5F9F8;
+            padding: 30px;
+        }
+        .card {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            width: 45%;
+            min-height: 250px;
+            text-align: left;
+        }
+        .card h2 {
+            text-align: center;
+            margin-bottom: 15px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 16px;
+        }
+        th, td {
+            padding: 12px;
+            text-align: left;
+        }
+        th {
+            background: #1a202c;
+            color: white;
+            text-align: center;
+        }
+        tbody tr:nth-child(even) {
+            background: #f1f5f9;
+        }
+        tbody tr:hover {
+            background: #e2e8f0;
+            transition: 0.3s;
+        }
+        .status {
+            font-weight: bold;
+            text-align: center;
+        }
+        td:nth-child(2),
+        td:nth-child(3),
+        td:nth-child(4) {
+            text-align: center;
+        }
+        .card:first-child {
+            width: 100%;
+        }
+        .card:last-child {
+            width: 100%;
+        }
+        .small-input {
+		    width: 80px; 
+		    text-align: center;
+		    font-size: 14px;
+		    padding: 5px;
+		}
+		.logout{
+		    margin-left: 40px; /* Adds space between the span and the links */
+		}
     </style>
 </head>
 <body>
-
-    <!-- Navigation Bar -->
-    <nav class="navbar navbar-expand-lg navbar-dark">
-        <div class="container-fluid">
-            <a class="navbar-brand" href="#">Supervisor Portal</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav me-auto">
-                    <li class="nav-item">
-                        <a class="nav-link" href="/" id="homeBtn">Home</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/report_issue" id="repairIssueBtn">Repair Issue</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/track_repair" id="trackRepairsBtn">Track Repairs</a>
-                    </li>
-                </ul>
-                <ul class="navbar-nav ms-auto">
-	                <li class="nav-item">
-				        <span class="nav-link text-muted" th:if="${session.email}">Welcome, <b th:text="${session.email}"></b></span>
-				    </li>
-			    </ul>
-                <ul class="navbar-nav ms-auto">
-                    <li class="nav-item">
-                        <a class="nav-link" href="/logout">Logout</a>
-                    </li>
-                </ul>
-            </div>
+    <div class="navbar">
+        <a class="navbar-brand" href="/supervisor"><i class="fas fa-road"></i> RoadCare</a>
+        <div class="nav-links">
+        	<span>Welcome, <strong th:text="${session.email}"></strong>!</span>
+            <a th:href="@{/logout}" class="logout"><i class="fas fa-sign-out-alt"></i> Logout</a>
+            <a th:href="@{/delete}" class="delete"><i class="fas fa-user-slash"></i> Delete Account</a>
         </div>
-    </nav>
-
-    <!-- Main Content -->
-    <div class="content">
-        <h1>Welcome to the Supervisor Portal</h1>
-        <p>Use the navigation bar to report issues or track repairs.</p>
     </div>
+    <div class="main-content">
+    	<h2 class="text-center mb-4 text-primary fw-bold">Welcome to RoadCare - Track Repair Status</h2>
+	    <p class="text-center text-muted fs-5">
+	        Easily track ongoing and in-progress road repair tasks in your area.<br>
+	        Use the search and filter options below to find specific repairs.
+	    </p>
+	    
+        <div class="card">        
+            <h2>Repair Requests</h2>
+            <div style="display: flex; gap: 10px; margin-bottom: 10px;">
+                <select id="filterType" style="padding: 8px;">
+                    <option value="location">Filter by Location</option>
+                    <option value="severity">Filter by Severity</option>
+                    <option value="status">Filter by Status</option>
+                </select>
+                <input type="text" id="filterInput" placeholder="Enter search term..." onkeyup="filterRepairs()" style="flex: 1; padding: 8px;">
+            </div>
+            <table id="repairRequests">
+                <thead>
+                    <tr>
+                        <th>City</th>
+                        <th>Issue Type</th>
+                        <th>Severity</th>
+                        <th>Status</th>
+                        <th>Issue Date</th>
+                        <th>Completion Date</th>
+                        <th>Manpower</th>
+			            <th>Resources</th>
+			            <th>Machines</th>
+			            <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+        <!-- <div class="card">
+            <h2>Allocated Resources</h2>
+            <table id="allocatedResources">
+                <thead>
+                    <tr>
+                        <th>City</th>
+                        <th>Manpower</th>
+                        <th>Materials</th>
+                        <th>Machines</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div> -->
+    </div>
+    <script>
+	    async function fetchRepairRequests() {
+	        const response = await fetch('/api/repairs');
+	        const data = await response.json();
+	        const tableBody = document.querySelector("#repairRequests tbody");
+	        tableBody.innerHTML = "";
+	
+	        data.forEach(todo => {
+	            const row = document.createElement("tr");
+	
+	            row.innerHTML = `
+	                <td>${todo.city}</td>
+	                <td>${todo.issueType}</td>
+	                <td>${todo.severity}</td>
+	                
+	                <td>
+		                <select id="status-${todo.id}" class="form-select form-select-sm" onchange="updateStatus('${todo.id}')">
+		                    <option value="Pending" ${todo.status == 'Pending' ? 'selected' : ''}>Pending</option>
+		                    <option value="In Progress" ${todo.status == 'In Progress' ? 'selected' : ''}>In Progress</option>
+		                    <option value="Completed" ${todo.status == 'Completed' ? 'selected' : ''}>Completed</option>
+		                </select>
+		            </td>
+	                
+		            <td><input type="date" id="issueDate-${todo.id}" value="${todo.issueDate}" class="form-control form-control-sm" onchange="updateDates('${todo.id}')"></td>
+		            <td><input type="date" id="completionDate-${todo.id}" value="${todo.completionDate}" class="form-control form-control-sm" onchange="updateDates('${todo.id}')"></td>
+	                
+	                <td><input type="text" id="manpower-${todo.id}" value="${todo.manpower}" class="small-input"></td>
+	                
+	                <td style="text-align: center; vertical-align: middle;">
+		                <div id="resources-container-${todo.id}" style="display: flex; flex-direction: column; align-items: center;">
+		                    <button type="button" onclick="addResourceField('${todo.id}')" class="btn btn-success btn-sm">+</button>
+		                </div>
+		            </td>
 
-    <!-- Bootstrap JS and dependencies -->
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>    
+	                <td><input type="text" id="machines-${todo.id}" value="${todo.machines}" class="small-input"></td>
+	                <td><button onclick="allocateResources('${todo.id}')" class="btn btn-primary btn-sm">Allocate</button></td>
+	            `;
+	
+	            tableBody.appendChild(row);
+	            restoreResources(todo.id, todo.resources);
+	        });
+	    }
+		
+	    function restoreResources(requestId, resources) {
+	        if (!resources) return;
+
+	        const container = document.getElementById(`resources-container-${requestId}`);
+	        Object.entries(resources).forEach(([type, qty]) => {
+	            const div = document.createElement("div");
+	            div.innerHTML = `
+	                <input type="text" placeholder="Type" class="small-input resource-type" value="${type}">
+	                <input type="number" placeholder="Qty" class="small-input resource-qty" value="${qty}">
+	                <button type="button" class="btn btn-danger btn-sm" onclick="deleteResource('${requestId}', '${type}', this)">-</button>
+	            `;
+	            container.appendChild(div);
+	        });
+	    }
+	    
+	    async function deleteResource(requestId, resourceType, button) {
+	    	if (!resourceType) {
+	            alert("Resource type is empty. Please enter a valid type before deleting.");
+	            return;
+	        }
+	    	
+	        const confirmed = confirm(`Are you sure you want to delete "${resourceType}"?`);
+	        if (!confirmed) return;
+
+	        const response = await fetch(`/api/allocate/${requestId}/delete-resource/${resourceType}`, {
+	            method: "DELETE",
+	        });
+
+	        if (response.ok) {
+	            button.parentNode.remove(); // Remove the div from UI
+	            alert(`${resourceType} removed successfully.`);
+	        } else {
+	            alert("Failed to remove resource.");
+	        }
+	    }
+		
+	    async function addResourceField(requestId, type = "", qty = "") {
+            const container = document.getElementById(`resources-container-${requestId}`);
+            const div = document.createElement("div");
+            div.innerHTML = `
+                <input type="text" placeholder="Type" class="small-input resource-type" value="${type}">
+                <input type="number" placeholder="Qty" class="small-input resource-qty" value="${qty}">
+                <button type="button" class="btn btn-danger btn-sm" onclick="deleteResource('${requestId}', '${type}', this)">-</button>
+            `;
+            container.appendChild(div);
+            div.dataset.oldType = type;
+
+            const deleteBtn = div.querySelector(".delete-btn");
+            deleteBtn.addEventListener("click", async function () {
+                const type = div.querySelector(".resource-type").value.trim();
+                if (!type) return;
+
+                await deleteResource(requestId, type, div);
+            });
+
+            // 🔥 Immediately save the resource in the database
+        }
+	    
+	    async function saveResource(requestId, div) {
+	        const typeInput = div.querySelector(".resource-type");
+	        const qtyInput = div.querySelector(".resource-qty");
+
+	        const newType = typeInput.value.trim();
+	        const newQty = qtyInput.value.trim();
+
+	        if (!newType || !newQty) return; // Prevent empty data
+
+	        // Get the old type stored in the div (before editing)
+	        const oldType = div.dataset.oldType;
+
+	        const response = await fetch(`/api/allocate/${requestId}/update-resource`, {
+	            method: "PUT",
+	            headers: { "Content-Type": "application/json" },
+	            body: JSON.stringify({
+	                oldType: oldType,  // Send the old type for reference
+	                newType: newType,
+	                quantity: parseInt(newQty, 10)
+	            }),
+	        });
+
+	        if (!response.ok) {
+	            alert("Failed to update resource.");
+	        } else {
+	            // If successful, update dataset so it stores the new type for future updates
+	            div.dataset.oldType = newType;
+	        }
+	    }
+
+	    
+        function filterRepairs() {
+            const filterType = document.getElementById("filterType").value;
+            const input = document.getElementById("filterInput").value.toLowerCase();
+            const tableRows = document.querySelectorAll("#repairRequests tbody tr");
+            let columnIndex = filterType === "location" ? 0 : filterType === "severity" ? 2 : 3;
+            tableRows.forEach(row => {
+                const columnText = row.cells[columnIndex].textContent.toLowerCase();
+                row.style.display = columnText.includes(input) ? "" : "none";
+            });
+        }
+        async function updateDates(requestId) {
+            const issueDate = new Date(document.getElementById(`issueDate-${requestId}`).value);
+            const completionDate = new Date(document.getElementById(`completionDate-${requestId}`).value);
+
+            // Convert to UTC to avoid timezone shift
+            const payload = {
+                issueDate: issueDate.toISOString().split("T")[0],  
+                completionDate: completionDate.toISOString().split("T")[0]
+            };
+
+            const response = await fetch(`/api/updateDates/${requestId}`, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(payload)
+            });
+
+            if (response.ok) {
+                Swal.fire({
+                    title: "Updated!",
+                    text: "Issue Date and Completion Date updated successfully.",
+                    icon: "success",
+                    confirmButtonText: "OK"
+                });
+            } else {
+                Swal.fire({
+                    title: "Error!",
+                    text: "Failed to update dates.",
+                    icon: "error",
+                    confirmButtonText: "OK"
+                });
+            }
+        }
+
+        async function updateStatus(requestId) {
+            const status = document.getElementById(`status-${requestId}`).value;
+
+            const response = await fetch(`/api/updateStatus/${requestId}`, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ status })
+            });
+
+            if (response.ok) {
+                Swal.fire({
+                    title: "Updated!",
+                    text: "Status updated successfully.",
+                    icon: "success",
+                    confirmButtonText: "OK"
+                });
+            } else {
+                Swal.fire({
+                    title: "Error!",
+                    text: "Failed to update status.",
+                    icon: "error",
+                    confirmButtonText: "OK"
+                });
+            }
+        }       
+        
+        async function allocateResources(requestId) {
+            const manpower = document.getElementById(`manpower-${requestId}`).value;
+            const machines = document.getElementById(`machines-${requestId}`).value;
+            
+            const resourceInputs = document.querySelectorAll(`#resources-container-${requestId} div`);
+
+            let resources = {};
+
+            resourceInputs.forEach(div => {
+                const type = div.querySelector(".resource-type").value.trim();
+                const qty = div.querySelector(".resource-qty").value.trim();
+                if (type && qty) {
+                    resources[type] = parseInt(qty, 10);
+                }
+            });
+
+            const payload = { manpower, resources, machines };
+            console.log("Sending Data:", payload);
+
+            const response = await fetch(`/api/allocate/${requestId}`, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(payload)
+            });
+			
+            if (response.ok) {
+                Swal.fire({
+                    title: "Success!",
+                    text: "Resources allocated successfully.",
+                    icon: "success",
+                    confirmButtonText: "OK"
+                }).then(() => {
+                	location.reload(); // Refresh table after confirmation
+                });
+            } else {
+                Swal.fire({
+                    title: "Error!",
+                    text: "Failed to allocate resources.",
+                    icon: "error",
+                    confirmButtonText: "OK"
+                });
+            }
+        }
+
+        async function fetchAllocatedResources() {
+            const response = await fetch('/api/resources');
+            const data = await response.json();
+            const tableBody = document.querySelector("#allocatedResources tbody");
+            tableBody.innerHTML = "";
+            data.forEach(resource => {
+                const row = `<tr>
+                                <td>${resource.city}</td>
+                                <td>${resource.manpower}</td>                                
+                                <td>
+	                                <ul>
+	                                    ${Object.entries(resource.resources || {}).map(([type, qty]) => `<li>${type}: ${qty}</li>`).join("")}
+	                                </ul>
+	                            </td>
+                                <td>${resource.machines}</td>
+                            </tr>`;
+                tableBody.innerHTML += row;
+            });
+        }
+        fetchRepairRequests();
+        fetchAllocatedResources();
+    </script>
 </body>
 </html>

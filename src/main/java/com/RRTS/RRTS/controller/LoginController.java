@@ -67,8 +67,9 @@ public class LoginController {
             return "redirect:/pre-login"; 
         }
 		User user = userRepository.findByEmail(email);
+		todo.setEmail(email);
 		todo.setUser(user);
-		todo.setStatus("pending");
+		todo.setStatus("Pending");
 		todo.setIssueDate(LocalDate.now());
 		switch(todo.getSeverity()) {
 			case "low":
@@ -99,9 +100,13 @@ public class LoginController {
         }
     }
 	
-	@RequestMapping("/track_repair")
-	public String getRepairPage() {
-		return "track_repair";
+	@RequestMapping(value="/track_repair", method = RequestMethod.GET)
+	public String getRepairPage(HttpSession session) {
+		String email = (String)session.getAttribute("email");
+		if (email == null) {
+            return "redirect:/pre-login"; 
+        }
+		return "demo";
 	}
 	
 	@RequestMapping("/contact")
@@ -128,6 +133,16 @@ public class LoginController {
         return "login";
     }
 	
+	@RequestMapping("/city_admin" )
+	public String getCityAdminPage() {
+		return "city_admin";
+	}
+	
+	@RequestMapping("/supervisor")
+	public String getSupervisorPage() {
+		return "supervisor";
+	}
+	
 	@RequestMapping(value = "/login", method = RequestMethod.POST)
     public String loginPage(@ModelAttribute("loginDetails") User user, HttpSession session) {
 		String result = authService.authenticateUser(user.getEmail(), user.getPassword(), user.getRole());
@@ -139,15 +154,19 @@ public class LoginController {
         case "Incorrect role":
         	return "loginFail";
         default:
+        	User fullUser = userRepository.findByEmail(user.getEmail());
         	session.setAttribute("email", user.getEmail());
             session.setAttribute("role", user.getRole());
+            session.setAttribute("city", fullUser.getCity());
+            session.setAttribute("firstName", fullUser.getFirstName());
+            
             switch (user.getRole().toLowerCase()) {
                 case "resident":
-                    return "resident";
+                    return "home";
                 case "supervisor":
-                    return "supervisor";
+                    return "redirect:/supervisor";
                 case "cityadmin":
-                    return "city_admin";
+                    return "redirect:/city_admin";
                 case "mayor":
                     return "mayor";
                 default:
@@ -181,10 +200,12 @@ public class LoginController {
 		
 		session.setAttribute("email", user.getEmail());
         session.setAttribute("role", user.getRole());
+        session.setAttribute("city", user.getCity());
+        session.setAttribute("firstName", user.getFirstName());
         
         switch (user.getRole().toLowerCase()) {
             case "resident":
-                return "resident";
+                return "home";
             case "supervisor":
                 return "supervisor";
             case "cityadmin":
@@ -201,10 +222,15 @@ public class LoginController {
 		String email = (String) session.getAttribute("email");
 		User user = userRepository.findByEmail(email);
 		
-		todoRepository.deleteAllByUser(user);
+		todoRepository.deleteByEmail(email);
 		userRepository.delete(user);
 		
 		return "redirect:/logout";
+	}
+	
+	@RequestMapping(value = "/profile", method = RequestMethod.GET)
+	public String getProfile(HttpSession session) {
+		return "profile";
 	}
 	
 	@RequestMapping("/about-us")

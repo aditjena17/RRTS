@@ -5,5 +5,5 @@ import java.util.List;
 import org.springframework.data.mongodb.repository.MongoRepository;
 
 public interface ResourcesRepository extends MongoRepository<Resources, String>{
-	public List<Resources> findByCity(String city);
+	public Resources findByCity(String city);
 }

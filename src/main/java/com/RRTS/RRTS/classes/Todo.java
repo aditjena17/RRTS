@@ -5,13 +5,16 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDate;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.Field;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -26,6 +29,7 @@ public class Todo {
     private String title; 
     private String location;    
     private String city;
+    private String state;
     private String description;
     private String issueType;
     private String severity;    
@@ -33,8 +37,11 @@ public class Todo {
     private LocalDate issueDate;    
     private LocalDate completionDate;
     private List<String> images;
+    private String email="";
     private String manpower="";
-    private String resources="";
+    
+    @Field("resources")
+    private Map<String, Integer> resources = new HashMap<>();
     private String machines="";
     
     @DBRef
@@ -44,7 +51,36 @@ public class Todo {
     	LOW,
     	MEDIUM,
     	HIGH
+    }           
+    
+	public Map<String, Integer> getResources() {
+		return resources;
+	}
+	public void setResources(Map<String, Integer> resources) {
+		this.resources = resources;
+	}
+	
+	public void updateResource(String oldType, String newType, int quantity) {
+        if (resources.containsKey(oldType)) {
+            // Remove the old resource entry
+            resources.remove(oldType);
+            // Add the new resource type with the updated quantity
+            resources.put(newType, quantity);
+        }
     }
+	
+	public String getState() {
+		return state;
+	}
+	public void setState(String state) {
+		this.state = state;
+	}
+	public String getEmail() {
+		return email;
+	}
+	public void setEmail(String email) {
+		this.email = email;
+	}
 	public void setId(String id) {
 		this.id = id;
 	}
@@ -120,17 +156,11 @@ public class Todo {
 	public void setManpower(String manpower) {
 		this.manpower = manpower;
 	}
-	public void setResources(String resources) {
-		this.resources = resources;
-	}
 	public void setMachines(String machines) {
 		this.machines = machines;
 	}
 	public String getManpower() {
 		return manpower;
-	}
-	public String getResources() {
-		return resources;
 	}
 	public String getMachines() {
 		return machines;
