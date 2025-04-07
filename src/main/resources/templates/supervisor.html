@@ -294,7 +294,7 @@
 	                <td>${todo.severity}</td>
 	                
 	                <td>
-		                <select id="status-${todo.id}" class="form-select form-select-sm" style="width: 120px;" onchange="updateStatus('${todo.id}')">
+		                <select id="status-${todo.id}" class="form-select form-select-sm" style="width: 120px;" onchange="updateStatus('${todo.id}')" ${todo.approved === 'Rejected' ? 'disabled' : ''}>
 		                    <option value="Pending" ${todo.status == 'Pending' ? 'selected' : ''}>Pending</option>
 		                    <option value="In Progress" ${todo.status == 'In Progress' ? 'selected' : ''}>In Progress</option>
 		                    <option value="Completed" ${todo.status == 'Completed' ? 'selected' : ''}>Completed</option>
@@ -302,17 +302,18 @@
 		            </td>
 	                
 		            <td><input type="date" id="issueDate-${todo.id}" value="${todo.issueDate}" class="form-control form-control-sm" style="width: 120px;" onchange="updateDates('${todo.id}')" disabled></td>
-		            <td><input type="date" id="completionDate-${todo.id}" value="${todo.completionDate}" class="form-control form-control-sm" style="width: 120px;" onchange="updateDates('${todo.id}')"></td>
+		            <td><input type="date" id="completionDate-${todo.id}" value="${todo.completionDate}" class="form-control form-control-sm" 
+		            style="width: 120px;" onchange="updateDates('${todo.id}')" ${todo.approved === 'Rejected' ? 'disabled' : ''}></td>
 	                
-	                <td><input type="number" id="manpower-${todo.id}" value="${todo.manpower}" class="small-input" style="width: 60px;"></td>
+	                <td><input type="number" id="manpower-${todo.id}" value="${todo.manpower}" class="small-input" style="width: 60px;" ${todo.approved === 'Rejected' ? 'disabled' : ''}></td>
 	                
 	                <td style="text-align: left; vertical-align: middle;">
 		                <div id="resources-container-${todo.id}" style="display: flex; flex-direction: column; align-items: center;">
-		                    <button type="button" onclick="addResourceField('${todo.id}')" class="btn btn-success btn-sm">+</button>
+		                    <button type="button" onclick="addResourceField('${todo.id}')" ${todo.approved === 'Rejected' ? 'disabled' : ''} class="btn btn-success btn-sm">+</button>
 		                </div>
 		            </td>
-	                <td><input type="number" id="machines-${todo.id}" value="${todo.machines}" class="small-input" style="width: 60px;"></td>
-	                <td><input type="number" id="estimated-cost-${todo.id}" value="${todo.estimated_cost}" class="form-control form-control-sm" style="width: 80px;"></td>
+	                <td><input type="number" id="machines-${todo.id}" value="${todo.machines}" ${todo.approved === 'Rejected' ? 'disabled' : ''} class="small-input" style="width: 60px;"></td>
+	                <td><input type="number" id="estimated-cost-${todo.id}" value="${todo.estimated_cost}" ${todo.approved === 'Rejected' ? 'disabled' : ''} class="form-control form-control-sm" style="width: 80px;"></td>
 
 	                ${allocationCell}
 	            `;
