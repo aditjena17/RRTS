@@ -1,22 +1,12 @@
 package com.RRTS.RRTS.classes;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
-import jakarta.annotation.Nullable;
 import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
+
 @Data
-@Document(collection = "users")
+@Document(collection = "Users")
 public class User {
     private String id;
     private String firstName;
@@ -85,5 +75,18 @@ public class User {
 	public String getState() {
 		return state;
 	}
-    
+	public User(String id, String firstName, String lastName, String email, String phoneNumber, String password,
+			String city, String state, String role) {
+		super();
+		this.id = id;
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.email = email;
+		this.phoneNumber = phoneNumber;
+		this.password = password;
+		this.city = city;
+		this.state = state;
+		this.role = role;
+	}
+    public User(){}
 } 

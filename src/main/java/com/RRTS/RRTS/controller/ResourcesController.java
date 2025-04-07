@@ -5,14 +5,20 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.CrudRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.springframework.web.servlet.view.RedirectView;
 
 import com.RRTS.RRTS.classes.Resources;
 import com.RRTS.RRTS.classes.ResourcesRepository;
@@ -20,6 +26,8 @@ import com.RRTS.RRTS.classes.Todo;
 import com.RRTS.RRTS.classes.TodoRepository;
 import com.RRTS.RRTS.classes.User;
 import com.RRTS.RRTS.classes.UserRepository;
+import com.RRTS.RRTS.repositories.IssuesRepository;
+import com.RRTS.RRTS.roles.Issues;
 
 import jakarta.servlet.http.HttpSession;
 
@@ -35,6 +43,9 @@ public class ResourcesController {
     
     @Autowired
     private UserRepository userRepository;
+    
+    @Autowired
+    private IssuesRepository issuesRepository;
 
     @RequestMapping("/repairs")
     public List<Todo> getRepairRequests(HttpSession session) {
@@ -52,14 +63,48 @@ public class ResourcesController {
     @DeleteMapping("/allocate/{requestId}/delete-resource/{resourceType}")
     public ResponseEntity<String> deleteResource(@PathVariable String requestId, @PathVariable String resourceType) {
         Todo allocation = todoRepository.findById(requestId);
-        Map<String, Integer> resources = allocation.getResources();
+        Issues issue = issuesRepository.findByRequestId(requestId);
+        Map<String, Integer> resources1 = allocation.getResources();
+        Map<String, Integer> resources2 = issue.getResources();
 
-        if (resources.containsKey(resourceType)) {
-            resources.remove(resourceType);
+        if (resources1.containsKey(resourceType)) {
+            resources1.remove(resourceType);
+            resources2.remove(resourceType);
             todoRepository.save(allocation);
+            issuesRepository.save(issue);
             return ResponseEntity.ok("Resource deleted successfully.");
         } else {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Resource not found.");
+        }
+    }
+    
+    @PostMapping("/approve/{id}")
+    public RedirectView approveIssue(@PathVariable String id) {
+        Todo todo = todoRepository.findById(id);
+        todo.setApproved("Yes");
+        todoRepository.save(todo);
+        
+		return new RedirectView("/city_admin");
+    }
+
+    @PostMapping("/reject/{id}")
+    public RedirectView rejectIssue(@PathVariable String id, RedirectAttributes redirectAttributes) {
+    	Todo todo = todoRepository.findById(id);
+        todo.setApproved("Rejected");
+        todoRepository.save(todo);
+		
+		return new RedirectView("/city_admin");
+    }
+    
+    @PostMapping("/reset-approval/{id}")
+    public ResponseEntity<String> resetApproval(@PathVariable String id) {
+        Todo todo = todoRepository.findById(id);
+        if (todo != null) {
+            todo.setApproved("No");
+            todoRepository.save(todo);
+            return ResponseEntity.ok("Approval reset to No");
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Todo not found");
         }
     }
 
@@ -68,30 +113,24 @@ public class ResourcesController {
         return resourceRepository.findAll();
     }
     
-    @RequestMapping("/mayor")
-    public Map<String, Object> getMayorStats() {
-        Map<String, Object> stats = new HashMap<>();
-        
-        stats.put("totalRequests", 120);  // Example value
-        stats.put("totalResources", 45);  // Example value
-
-        stats.put("repairDistribution", List.of(
-            Map.of("name", "Potholes", "value", 50),
-            Map.of("name", "Cracks", "value", 30),
-            Map.of("name", "Others", "value", 40)
-        ));
-
-        stats.put("resourceDistribution", List.of(
-            Map.of("name", "Concrete", "value", 25),
-            Map.of("name", "Asphalt", "value", 20)
-        ));
-
-        return stats;
-    }
-    
     @RequestMapping("/todos")
     public List<Todo> getTodosByCity(HttpSession session) {
     	String city = (String)session.getAttribute("city");
         return todoRepository.findByCity(city);
     }
+    
+    
+    
+    @DeleteMapping("/deleteResource/{id}")
+    public ResponseEntity<Void> deleteResource(@PathVariable String id) {
+        if (resourceRepository.existsById(id)) {
+            resourceRepository.deleteById(id);
+            return ResponseEntity.noContent().build();
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+
+
 }

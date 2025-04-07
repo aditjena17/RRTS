@@ -11,17 +11,15 @@
     <style>
         /* Navbar Styling */
         .navbar {
-            background: linear-gradient(#00203ff2, rgba(31, 58, 147, 0.9));
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            background:#212529 !important;
         }
         .navbar-brand {
             font-size: 1.5rem;
             color: white !important;
-            font-weight: bold;
         }
         .nav-link {
             color: white !important;
-            font-weight: 500;
+            font-weight: 400;
             transition: color 0.3s ease;
         }
         .nav-link:hover {
@@ -61,7 +59,7 @@
 		    border-radius: 12px;
 		    box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
 		    transition: transform 0.2s ease-in-out;
-		    background: linear-gradient(#00203ff2, rgba(31, 58, 147, 0.9));
+		    background: white;
 		    padding: 20px;
 		    display: grid;
 		    grid-template-columns: repeat(3, 1fr); /* 3-column layout */
@@ -70,7 +68,7 @@
 		    text-align: center;
 		    border: 1px solid #ddd;
     		backdrop-filter: blur(5px);
-    		color: white;
+    		color: black;
 		}
 		
 		.card:hover {
@@ -85,10 +83,11 @@
 		    color: black; /* Ensures good contrast against dark background */
 		    text-transform: capitalize; /* Capitalize first letter of each word */
 		    letter-spacing: 0.5px; /* Slight spacing for readability */
-		    background: linear-gradient(200deg, #ff7300, #fdc830);
+		    background: #00203f;
 		    padding: 10px 15px; /* Padding for better appearance */
 		    border-radius: 8px; /* Soft rounded corners */
 		    display: inline-block; /* Keeps background wrapping around text */
+		    color:white;
 		}
 	
 	    .card .info {
@@ -127,7 +126,7 @@
 		}
 		
 		body{
-			background:#D5F9F8;
+			background:linear-gradient(135deg, #00203f 0%, #1f3a93 50%, #3498db 100%);
 		}
 		
     </style>
@@ -138,7 +137,10 @@
     <!-- Navbar -->
     <nav class="navbar navbar-expand-lg">
 	    <div class="container">
-	        <a class="navbar-brand" href="/"><i class="fas fa-road"></i> RoadCare</a>
+	        <a class="navbar-brand d-flex align-items-center" href="/">
+                <i class="fas fa-road text-primary fs-4 me-2"></i>
+                <span>Road</span><span style="color: #F9BB00;"><b>Care</b></span>
+            </a>
 	        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
 	            <span class="navbar-toggler-icon"></span>
 	        </button>
@@ -161,18 +163,26 @@
 	            
 	            <!-- Right-aligned Logout button -->
 	            <ul class="navbar-nav ms-auto">
-	                <li class="nav-item">
-	                    <a class="nav-link btn btn-logout px-3" href="/logout"><i class="fas fa-sign-out-alt"></i> Logout</a>
-	                </li>
+	            	<div class="d-flex align-items-center me-4">
+                        <i class="fas fa-user-circle text-primary me-2 fs-5"></i>
+                        <span class="text-white">Welcome, 
+                        <strong><span th:text="${session.firstName}"></span></strong>!</span>
+                    </div>
+	                <a href="/logout" class="btn btn-outline-primary btn-sm text-light">
+                        <i class="fas fa-sign-out-alt me-1 text-light"></i> Logout
+                    </a>
+                    <a href="/delete" class="btn btn-outline-danger btn-sm text-light" style="margin-left: 10px;">
+                        <i class="fas fa-trash-alt me-1 text-light"></i> Delete Account
+                    </a>
 	            </ul>
 	        </div>
 	    </div>
 	</nav>
 
 
-    <div class="container py-5">
-	    <h2 class="text-center mb-4 text-primary fw-bold">Welcome to RoadCare - Track Repairs</h2>
-	    <p class="text-center text-muted fs-5" >
+    <div class="container py-4">
+	    <h2 class="text-center mb-4 text-white fw-bold">Welcome to RoadCare - Track Repairs</h2>
+	    <p class="text-center text-muted fs-5 text-white-50" >
 	        Easily track ongoing and completed road repair tasks in your area.<br>
 	        Use the search and filter options below to find specific repairs.
 	    </p>
@@ -205,7 +215,42 @@
 	        <!-- Cards will be inserted here dynamically -->
 	    </div>
 	</div>
-
+	<footer class="bg-dark text-white py-5 mt-5">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-4 mb-4">
+                        <h5 class="mb-3"><i class="fas fa-road me-2 text-warning"></i>RoadCare</h5>
+                        <p class="text-white">Making our roads safer, one repair at a time. Join us in our mission to improve community infrastructure.</p>
+                        <div class="mt-3">
+                            <a href="#" class="text-white me-3"><i class="fab fa-facebook-f"></i></a>
+                            <a href="#" class="text-white me-3"><i class="fab fa-twitter"></i></a>
+                            <a href="#" class="text-white me-3"><i class="fab fa-instagram"></i></a>
+                            <a href="#" class="text-white"><i class="fab fa-linkedin-in"></i></a>
+                        </div>
+                    </div>
+                    <div class="col-lg-2 col-md-6 mb-4">
+                        <h5 class="mb-3">Quick Links</h5>
+                        <ul class="list-unstyled">
+                            <li class="mb-2"><a href="/" class="text-white text-decoration-none">Home</a></li>
+                            <li class="mb-2"><a th:href="@{/contact}" class="text-white text-decoration-none">About Us</a></li>
+                            <li class="mb-2"><a th:href="@{/contact}" class="text-white text-decoration-none">Services</a></li>
+                            <li class="mb-2"><a th:href="@{/contact}" class="text-white text-decoration-none">FAQs</a></li>
+                        </ul>
+                    </div>
+                    <div class="col-lg-3 col-md-6 mb-4">
+                        <h5 class="mb-3">Contact Info</h5>
+                        <ul class="list-unstyled text-white">
+                            <li class="mb-2"><i class="fas fa-phone me-2"></i> +91 93372 30314</li>
+                            <li class="mb-2"><i class="fas fa-envelope me-2"></i> roadcare@gmail.com</li>
+                            <li class="mb-2"><i class="fas fa-map-marker-alt me-2"></i> NIT Rourkela</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>                    
+    	</footer>
+	    <div class="bg-dark text-center py-3">
+	        <small class="text-white">© 2025 RoadCare™. All rights reserved.</small>
+	    </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     <script>
         // Function to fetch repair data and populate the table

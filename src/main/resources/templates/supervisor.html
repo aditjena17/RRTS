@@ -3,55 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Allocate Resources - RoadCare</title>
+    <title>Supervisor - RoadCare</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">    
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     
-    <link rel="stylesheet" href="home.css">
+    <link rel="stylesheet" href="report_issue.css">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     
     <style>
         body {
             margin: 0;
             font-family: 'Poppins', sans-serif;
-            background: #D5F9F8;
-        }
-        .navbar {
-            width: 100%;
-            background: linear-gradient(#00203ff2, rgba(31, 58, 147, 0.9));
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-            color: white;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 8px 15px;
-        }
-        .navbar h1 {
-            font-size: 26px;
-            font-weight: bold;
-        }
-        .nav-links {
-            color: white !important;
-            font-weight: 500;
-            transition: color 0.3s ease;
-        }
-        .nav-links a {
-            text-decoration: none;
-            color: white;
-            font-size: 18px;
-            padding: 10px;
-            border-radius: 5px;
-            transition: color 0.3s ease-in-out;
-        }
-        .nav-links a:hover {
-            color: #ffd700 !important;
-        }
-        .navbar-brand {
-            font-size: 1.5rem;
-            color: white !important;
-            font-weight: bold;
+            background: linear-gradient(135deg, #00203f 0%, #1f3a93 50%, #3498db 100%);
         }
         .content {
             padding: 20px;
@@ -64,8 +29,8 @@
         .main-content {
             display: flex;
             flex-direction: column;
-            align-items: left;
-            background: #D5F9F8;
+            align-items: left; 
+            background: transparent;
             padding: 30px;
         }
         .card {
@@ -126,26 +91,68 @@
 		.logout{
 		    margin-left: 40px; /* Adds space between the span and the links */
 		}
+		.btn-approval {
+	        transition: background-color 0.1s ease, transform 0.1s ease;
+	    }
+	
+	    .btn-approval:hover {
+	        background-color: #e0a800;
+	    }
+	
+	    .btn-approval:active {
+	        transform: scale(0.95);
+	    }
     </style>
 </head>
 <body>
-    <div class="navbar">
-        <a class="navbar-brand" href="/supervisor"><i class="fas fa-road"></i> RoadCare</a>
-        <div class="nav-links">
-        	<span>Welcome, <strong th:text="${session.email}"></strong>!</span>
-            <a th:href="@{/logout}" class="logout"><i class="fas fa-sign-out-alt"></i> Logout</a>
-            <a th:href="@{/delete}" class="delete"><i class="fas fa-user-slash"></i> Delete Account</a>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+        <div class="container">
+            <a class="navbar-brand d-flex align-items-center" href="/supervisor">
+                <i class="fas fa-road text-primary fs-4 me-2"></i>
+                <span>Road</span><span style="color: #F9BB00;"><b>Care</b></span>
+            </a>
+            <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <a class="nav-link px-3" href="/supervisor">
+                            <i class="fas fa-home me-1"></i> Home
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link px-3" href="/contact">
+                            <i class="fas fa-envelope me-1"></i> Contact
+                        </a>
+                    </li>
+                </ul>
+                <div class="d-flex align-items-center">
+                    <div class="d-flex align-items-center me-4">
+                        <i class="fas fa-user-circle text-primary me-2 fs-5"></i>
+                        <span class="text-white">Welcome, 
+                        <strong><span th:text="${session.firstName}"></span></strong>!</span>
+                    </div>
+                    <a href="/logout" class="btn btn-outline-primary btn-sm text-light" >
+                        <i class="fas fa-sign-out-alt me-1 text-light"></i> Logout
+                    </a>
+                    <a href="/delete" class="btn btn-outline-danger btn-sm text-light" style="margin-left: 10px;">
+					    <i class="fas fa-trash-alt me-1 text-light"></i> Delete Account
+					</a>
+
+                </div>
+            </div>
         </div>
-    </div>
+    </nav>
     <div class="main-content">
-    	<h2 class="text-center mb-4 text-primary fw-bold">Welcome to RoadCare - Track Repair Status</h2>
-	    <p class="text-center text-muted fs-5">
+    	<h2 class="text-center mb-4 text-white fw-bold" style="margin-top:20px;">Welcome to RoadCare - Track Repair Status</h2>
+	    <p class="text-center text-muted fs-5 text-white-50" style="margin-bottom:20px;">
 	        Easily track ongoing and in-progress road repair tasks in your area.<br>
 	        Use the search and filter options below to find specific repairs.
 	    </p>
 	    
         <div class="card">        
-            <h2>Repair Requests</h2>
+            <h2 style="font-weight: bold;">Repair Requests</h2>
             <div style="display: flex; gap: 10px; margin-bottom: 10px;">
                 <select id="filterType" style="padding: 8px;">
                     <option value="location">Filter by Location</option>
@@ -166,6 +173,7 @@
                         <th>Manpower</th>
 			            <th>Resources</th>
 			            <th>Machines</th>
+			            <th>Cost</th>
 			            <th>Action</th>
                     </tr>
                 </thead>
@@ -187,6 +195,42 @@
             </table>
         </div> -->
     </div>
+    <footer class="bg-dark text-white py-5 mt-5">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-4 mb-4">
+                        <h5 class="mb-3"><i class="fas fa-road me-2 text-warning"></i>RoadCare</h5>
+                        <p class="text-white">Making our roads safer, one repair at a time. Join us in our mission to improve community infrastructure.</p>
+                        <div class="mt-3">
+                            <a href="#" class="text-white me-3"><i class="fab fa-facebook-f"></i></a>
+                            <a href="#" class="text-white me-3"><i class="fab fa-twitter"></i></a>
+                            <a href="#" class="text-white me-3"><i class="fab fa-instagram"></i></a>
+                            <a href="#" class="text-white"><i class="fab fa-linkedin-in"></i></a>
+                        </div>
+                    </div>
+                    <div class="col-lg-2 col-md-6 mb-4">
+                        <h5 class="mb-3">Quick Links</h5>
+                        <ul class="list-unstyled">
+                            <li class="mb-2"><a href="/" class="text-white text-decoration-none">Home</a></li>
+                            <li class="mb-2"><a th:href="@{/contact}" class="text-white text-decoration-none">About Us</a></li>
+                            <li class="mb-2"><a th:href="@{/contact}" class="text-white text-decoration-none">Services</a></li>
+                            <li class="mb-2"><a th:href="@{/contact}" class="text-white text-decoration-none">FAQs</a></li>
+                        </ul>
+                    </div>
+                    <div class="col-lg-3 col-md-6 mb-4">
+                        <h5 class="mb-3">Contact Info</h5>
+                        <ul class="list-unstyled text-white">
+                            <li class="mb-2"><i class="fas fa-phone me-2"></i> +91 93372 30314</li>
+                            <li class="mb-2"><i class="fas fa-envelope me-2"></i> roadcare@gmail.com</li>
+                            <li class="mb-2"><i class="fas fa-map-marker-alt me-2"></i> NIT Rourkela</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>                    
+    	</footer>
+	    <div class="bg-dark text-center py-3">
+	        <small class="text-white">© 2025 RoadCare™. All rights reserved.</small>
+	    </div>
     <script>
 	    async function fetchRepairRequests() {
 	        const response = await fetch('/api/repairs');
@@ -196,33 +240,81 @@
 	
 	        data.forEach(todo => {
 	            const row = document.createElement("tr");
-	
+	            let allocationCell = '';
+	            if (todo.approved === "Yes") {
+	                allocationCell = `
+	                    <td>
+	                        <button onclick="allocateResources('${todo.id}')" class="btn btn-primary btn-sm"
+	                        	style="padding: 11px 18px; font-size:16px;">
+	                            Allocate
+	                        </button>
+	                    </td>
+	                `;
+	            } else if (todo.approved === "No") {
+	                allocationCell = `
+	                    <td>
+	                        <button onclick="getApproval(this,'${todo.id}')" class="btn btn-warning btn-sm btn-approval">
+	                            Get Approval
+	                        </button>
+	                    </td>
+	                `;
+	            } else if (todo.approved === "Rejected") {
+	                allocationCell = `
+	                    <td>
+	                        <button class="btn btn-danger btn-sm" disabled>
+	                        <i class="fa-solid fa-ban"></i> Rejected
+	                        </button>
+	                    </td>
+	                `;
+	            } else if(todo.approved === "Waiting"){
+	            	allocationCell = `
+	            	    <td>
+	            	        <button onclick="getApproval(this,'${todo.id}')" class="btn btn-warning btn-sm btn-approval" 
+	            	        disabled style="width: 100px; padding: 2px 6px; font-size: 14px;">
+	            	            Waiting for Approval
+	            	        </button>
+	            	    </td>
+	            	`;
+
+	            }
+	            
+	            else {
+	                allocationCell = `
+	                    <td>
+		                	<button onclick="getApproval(this,'${todo.id}')" class="btn btn-warning btn-sm btn-approval">
+		                        Get Approval
+		                    </button>
+	                    </td>
+	                `;
+	            }
+	            
 	            row.innerHTML = `
 	                <td>${todo.city}</td>
 	                <td>${todo.issueType}</td>
 	                <td>${todo.severity}</td>
 	                
 	                <td>
-		                <select id="status-${todo.id}" class="form-select form-select-sm" onchange="updateStatus('${todo.id}')">
+		                <select id="status-${todo.id}" class="form-select form-select-sm" style="width: 120px;" onchange="updateStatus('${todo.id}')">
 		                    <option value="Pending" ${todo.status == 'Pending' ? 'selected' : ''}>Pending</option>
 		                    <option value="In Progress" ${todo.status == 'In Progress' ? 'selected' : ''}>In Progress</option>
 		                    <option value="Completed" ${todo.status == 'Completed' ? 'selected' : ''}>Completed</option>
 		                </select>
 		            </td>
 	                
-		            <td><input type="date" id="issueDate-${todo.id}" value="${todo.issueDate}" class="form-control form-control-sm" onchange="updateDates('${todo.id}')"></td>
-		            <td><input type="date" id="completionDate-${todo.id}" value="${todo.completionDate}" class="form-control form-control-sm" onchange="updateDates('${todo.id}')"></td>
+		            <td><input type="date" id="issueDate-${todo.id}" value="${todo.issueDate}" class="form-control form-control-sm" style="width: 120px;" onchange="updateDates('${todo.id}')" disabled></td>
+		            <td><input type="date" id="completionDate-${todo.id}" value="${todo.completionDate}" class="form-control form-control-sm" style="width: 120px;" onchange="updateDates('${todo.id}')"></td>
 	                
-	                <td><input type="text" id="manpower-${todo.id}" value="${todo.manpower}" class="small-input"></td>
+	                <td><input type="number" id="manpower-${todo.id}" value="${todo.manpower}" class="small-input" style="width: 60px;"></td>
 	                
-	                <td style="text-align: center; vertical-align: middle;">
+	                <td style="text-align: left; vertical-align: middle;">
 		                <div id="resources-container-${todo.id}" style="display: flex; flex-direction: column; align-items: center;">
 		                    <button type="button" onclick="addResourceField('${todo.id}')" class="btn btn-success btn-sm">+</button>
 		                </div>
 		            </td>
+	                <td><input type="number" id="machines-${todo.id}" value="${todo.machines}" class="small-input" style="width: 60px;"></td>
+	                <td><input type="number" id="estimated-cost-${todo.id}" value="${todo.estimated_cost}" class="form-control form-control-sm" style="width: 80px;"></td>
 
-	                <td><input type="text" id="machines-${todo.id}" value="${todo.machines}" class="small-input"></td>
-	                <td><button onclick="allocateResources('${todo.id}')" class="btn btn-primary btn-sm">Allocate</button></td>
+	                ${allocationCell}
 	            `;
 	
 	            tableBody.appendChild(row);
@@ -238,7 +330,7 @@
 	            const div = document.createElement("div");
 	            div.innerHTML = `
 	                <input type="text" placeholder="Type" class="small-input resource-type" value="${type}">
-	                <input type="number" placeholder="Qty" class="small-input resource-qty" value="${qty}">
+	                <input type="number" placeholder="Qty" class="small-input resource-qty" value="${qty}"	>
 	                <button type="button" class="btn btn-danger btn-sm" onclick="deleteResource('${requestId}', '${type}', this)">-</button>
 	            `;
 	            container.appendChild(div);
@@ -284,8 +376,6 @@
 
                 await deleteResource(requestId, type, div);
             });
-
-            // 🔥 Immediately save the resource in the database
         }
 	    
 	    async function saveResource(requestId, div) {
@@ -391,7 +481,71 @@
         async function allocateResources(requestId) {
             const manpower = document.getElementById(`manpower-${requestId}`).value;
             const machines = document.getElementById(`machines-${requestId}`).value;
-            
+            const estimatedCost = document.getElementById(`estimated-cost-${requestId}`).value;
+
+            const resourceInputs = document.querySelectorAll(`#resources-container-${requestId} div`);
+            let resources = {};
+
+            resourceInputs.forEach(div => {
+                const type = div.querySelector(".resource-type").value.trim();
+                const qty = div.querySelector(".resource-qty").value.trim();
+                if (type && qty) {
+                    resources[type] = parseInt(qty, 10);
+                }
+            });
+
+            const materials_used = Object.keys(resources);
+
+            const payload = {
+           		manpower: manpower,
+                machines: machines,
+                estimated_cost: estimatedCost,
+                resources: resources,
+                materials_used
+            };
+
+            console.log("Sending Data:", payload);
+
+            const response = await fetch(`/api/allocate/${requestId}`, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(payload)
+            });
+
+            if (response.ok) {
+                Swal.fire({
+                    title: "Success!",
+                    text: "Resources allocated successfully.",
+                    icon: "success",
+                    confirmButtonText: "OK"
+                }).then(() => {
+                    location.reload(); // Refresh table after confirmation
+                });
+            } else {
+                Swal.fire({
+                    title: "Error!",
+                    text: "Failed to allocate resources.",
+                    icon: "error",
+                    confirmButtonText: "OK"
+                });
+            }
+
+            fetch(`/api/reset-approval/${requestId}`, {
+                method: 'POST'
+            })
+            .then(response => {
+                if (response.ok) {
+                    return response.text();
+                } else {
+                    throw new Error('Failed to reset approval');
+                }
+            })
+        }
+		
+        async function getApproval(button,requestId) {
+            const manpower = document.getElementById(`manpower-${requestId}`).value;
+            const machines = document.getElementById(`machines-${requestId}`).value;
+            const estimatedCost = document.getElementById(`estimated-cost-${requestId}`).value;
             const resourceInputs = document.querySelectorAll(`#resources-container-${requestId} div`);
 
             let resources = {};
@@ -404,10 +558,10 @@
                 }
             });
 
-            const payload = { manpower, resources, machines };
+            const payload = { manpower, resources, machines, estimated_cost: estimatedCost };
             console.log("Sending Data:", payload);
-
-            const response = await fetch(`/api/allocate/${requestId}`, {
+            
+            const response = await fetch(`/api/approval/${requestId}`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(payload)
@@ -416,22 +570,22 @@
             if (response.ok) {
                 Swal.fire({
                     title: "Success!",
-                    text: "Resources allocated successfully.",
+                    text: "Success, Waiting for Approval!",
                     icon: "success",
                     confirmButtonText: "OK"
                 }).then(() => {
-                	location.reload(); // Refresh table after confirmation
+                	location.reload();
                 });
             } else {
                 Swal.fire({
-                    title: "Error!",
-                    text: "Failed to allocate resources.",
+                    title: "Error!",                    
+                    text: "Failed to send approval request!",
                     icon: "error",
                     confirmButtonText: "OK"
                 });
             }
         }
-
+        
         async function fetchAllocatedResources() {
             const response = await fetch('/api/resources');
             const data = await response.json();

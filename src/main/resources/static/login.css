@@ -1,7 +1,6 @@
 .login-container {
     min-height: 100vh;
-    background: linear-gradient(rgba(0, 32, 63, 0.95), rgba(31, 58, 147, 0.9)),
-                url('https://images.unsplash.com/photo-1530085892894-8fff66c8e3b7?auto=format&fit=crop&q=80');
+    background: linear-gradient(150deg, #00203f 0%, #1f3a93 50%, #3498db 100%);
     background-size: cover;
     background-position: center;
 }

@@ -14,33 +14,46 @@
 </head>
 <body class="bg-light">
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
-        <div class="container">
-            <a class="navbar-brand" href=""><i class="fas fa-road"></i> RoadCare</a>
+        <div class="container-fluid">
+            <a class="navbar-brand fs-4" href="" style="margin-left:120px;">
+			  <i class="fas fa-road"></i>
+			  <span>Road</span><span style="color: #F9BB00;"><b>Care</b></span>
+			</a>
+
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav me-auto">
-                    <li class="nav-item"><a class="nav-link active" href="/">Home</a></li>
-                    <li class="nav-item"><a class="nav-link active" href="report_issue">Report Issue</a></li>
-                    <li class="nav-item"><a class="nav-link active" href="track_repair">Track Repairs</a></li>
-                    <li class="nav-item"><a class="nav-link active" href="contact">Contact</a></li>
+                    <li class="nav-item"><a class="nav-link active me-2" href="/"><i class="fas fa-home"></i> Home</a></li>
+                    <li class="nav-item"><a class="nav-link active me-2" href="report_issue"><i class="fas fa-tools"></i> Report Issue</a></li>
+                    <li class="nav-item"><a class="nav-link active me-2" href="track_repair"><i class="fas fa-search"></i> Track Repairs</a></li>
+                    <li class="nav-item"><a class="nav-link active" href="contact"><i class="fas fa-envelope me-1"></i> Contact</a></li>
                 </ul>
                 <div class="d-flex gap-2">
                 
 				    <div th:if="${session.email == null}">
-				        <a th:href="@{/pre-login}" class="btn btn-outline-light">
+				        <a th:href="@{/pre-login}" class="btn btn-outline-warning btn-sm fs-5 px-3 rounded-pill" style="margin-right:10px;">
 				            <i class="fas fa-sign-in-alt me-2"></i>Login
 				        </a>
-				        <a th:href="@{/pre-signup}" class="btn btn-custom">
+				        <a th:href="@{/pre-signup}" class="btn btn-custom btn-sm fs-5 px-3 rounded-pill" style="margin-right:100px;">
 				            <i class="fas fa-user-plus me-2"></i>Sign Up
 				        </a>
 				    </div>
 				
-				    <div th:if="${session.email != null}">
-				        <span class="text-white">Welcome, <strong><span th:text="${session.firstName}"></span></strong>!</span>
-				        <a th:href="@{/logout}" class="btn btn-outline-light ms-4 me-2"><i class="fas fa-sign-out-alt me-2"></i>Logout</a>
-				        <a th:href="@{/delete}" class="btn btn-outline-danger" onclick="confirmDelete(event)"><i class="fas fa-trash-alt me-2"></i>Delete Account</a>
+				    <div th:if="${session.email != null}" style="margin-right:60px;">
+				        <div class="d-flex align-items-center me-4">
+	                        <i class="fas fa-user-circle text-primary me-2 fs-5"></i>
+	                        <span class="text-white">Welcome, 
+	                        <strong><span th:text="${session.firstName}"></span></strong>!</span>
+	                        
+	                        <a href="/logout" class="btn btn-outline-primary btn-sm text-light" style="margin-left:40px;">
+		                        <i class="fas fa-sign-out-alt me-1 text-light"></i> Logout
+		                    </a>
+		                    <a href="/delete" class="btn btn-outline-danger btn-sm text-light" style="margin-left: 10px;">
+		                        <i class="fas fa-trash-alt me-1 text-light"></i> Delete Account
+		                    </a>
+	                    </div>				        
 				    </div>
 				</div>
             </div>
@@ -66,14 +79,14 @@
                     <div class="row g-4">
                         <div class="col-6">
                             <div class="bg-white p-4 rounded text-center h-100">
-                                <i class="fas fa-road fa-2x text-warning mb-3"></i>
+                                <i class="fas fa-road fa-2x text-primary mb-3"></i>
                                 <h4 class="text-dark">Quick Reports</h4>
                                 <p class="text-muted mb-0">Report issues in under 2 minutes</p>
                             </div>
                         </div>
                         <div class="col-6">
                             <div class="bg-white p-4 rounded text-center h-100">
-                                <i class="fas fa-clock fa-2x text-warning mb-3"></i>
+                                <i class="fas fa-clock fa-2x text-primary mb-3"></i>
                                 <h4 class="text-dark">24/7 Support</h4>
                                 <p class="text-muted mb-0">Round-the-clock assistance</p>
                             </div>
@@ -232,15 +245,14 @@
                     <div class="col-lg-3 col-md-6 mb-4">
                         <h5 class="mb-3">Contact Info</h5>
                         <ul class="list-unstyled text-white">
-                            <li class="mb-2"><i class="fas fa-phone me-2"></i> +1 234 567 8900</li>
-                            <li class="mb-2"><i class="fas fa-envelope me-2"></i> contact@roadcare.com</li>
-                            <li class="mb-2"><i class="fas fa-map-marker-alt me-2"></i> 123 Street, City, Country</li>
+                            <li class="mb-2"><i class="fas fa-phone me-2"></i> +91 93372 30314</li>
+                            <li class="mb-2"><i class="fas fa-envelope me-2"></i> roadcare@gmail.com</li>
+                            <li class="mb-2"><i class="fas fa-map-marker-alt me-2"></i> NIT Rourkela</li>
                         </ul>
                     </div>
                 </div>
-            </div>
-                    
-    </footer>
+            </div>                    
+    	</footer>
     <div class="bg-dark text-center py-3">
         <small class="text-white">© 2025 RoadCare™. All rights reserved.</small>
     </div>
@@ -251,7 +263,7 @@
     	    event.preventDefault();
     	    let userConfirmed = confirm("Are you sure you want to delete your account? This action cannot be undone.");
     	    if (userConfirmed) {
-    	        window.location.href = "/delete-account";
+    	        window.location.href = "/delete";
     	    }
     	}
 	    

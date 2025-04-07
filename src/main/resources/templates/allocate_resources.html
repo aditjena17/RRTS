@@ -3,246 +3,288 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"> 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <link rel="stylesheet" href="home.css">
+    <link rel="stylesheet" href="report_issue.css">
     <title>Allocate Resources - RoadCare</title>
-    <style>
-        body {
-            font-family: 'Poppins', sans-serif;
-            background: #f4f7fc;
-        }
-        .navbar {
-            background: linear-gradient(#00203ff2, rgba(31, 58, 147, 0.9));
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-            padding: 5px 15px;
-        }
-        .navbar-brand {
-            font-size: 1.7rem;
-            font-weight: bold;
-            color: white !important;
-            letter-spacing: 1px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        .navbar-brand i {
-            font-size: 1.5rem;
-            color: #ffd700;
-        }
-        .navbar-nav .nav-link {
-            font-size: 1.1rem;
-            color: white !important;
-            font-weight: 500;
-            transition: all 0.3s ease;
-            padding: 8px 15px;
-        }
-        .navbar-nav .nav-link:hover {
-            color: #ffd700 !important;
-            transform: translateY(-2px);
-        }
-        .main-content {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-        }
-        .card {
-            background: white;
-            padding: 30px;
-            border-radius: 12px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-            text-align: center;
-            width: 50%;
-        }
-        .form-group {
-            margin: 15px 0;
-            text-align: left;
-        }
-        label {
-            font-weight: bold;
-            font-size: 16px;
-        }
-        input, select {
-            width: 100%;
-            padding: 12px;
-            margin-top: 5px;
-            border: 1px solid #ccc;
-            border-radius: 8px;
-            font-size: 16px;
-            transition: 0.3s;
-        }
-        input:focus {
-            border-color: #007bff;
-            outline: none;
-            box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
-        }
-        button {
-            margin-top: 15px;
-            padding: 12px 20px;
-            background: #007bff;
-            color: white;
-            border: none;
-            border-radius: 8px;
-            font-size: 16px;
-            cursor: pointer;
-            transition: 0.3s;
-        }
-        button:hover {
-            background: #0056b3;
-        }
-        body {
-		    font-family: 'Poppins', sans-serif;
-		    background: linear-gradient(45deg, #C0F7F8, #FFFFFF);
-		    color: white;
-		}
-		
-		.main-content {
-		    display: flex;
-		    justify-content: center;
-		    align-items: center;
-		    height: 100vh;
-		    padding: 20px;
-		}
-		
-		.card {
-		    background: linear-gradient(#00203ff2, rgba(31, 58, 147, 0.9)); /* Glass effect */
-		    padding: 30px;
-		    border-radius: 15px;
-		    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
-		    backdrop-filter: blur(10px);
-		    text-align: center;
-		    width: 50%;
-		    color: white;
-		    border: 1px solid rgba(255, 255, 255, 0.3);
-		    padding-top:20px;
-		    width:60%;
-		}
-		
-		h2 {
-		    font-size: 26px;
-		    margin-bottom: 20px;
-		}
-		
-		.form-group {
-		    margin: 15px 0;
-		    text-align: left;
-		}
-		
-		label {
-		    font-weight: bold;
-		    font-size: 18px;
-		    display: block;
-		    margin-bottom: 5px;
-		}
-		
-		input, select {
-		    width: 100%;
-		    padding: 12px;
-		    margin-top: 5px;
-		    border: none;
-		    border-radius: 8px;
-		    font-size: 16px;
-		    transition: 0.3s;
-		    background: rgba(255, 255, 255, 0.2);
-		    color: white;
-		    border: 1px solid rgba(255, 255, 255, 0.5);
-		}
-		
-		input:focus {
-		    border-color: #ffd700;
-		    outline: none;
-		    box-shadow: 0 0 8px rgba(255, 215, 0, 0.8);
-		}
-		
-		button {
-		    margin-top: 20px;
-		    padding: 12px 20px;
-		    background: #FFD700;
-		    color: black;
-		    border: none;
-		    border-radius: 8px;
-		    font-size: 18px;
-		    font-weight: bold;
-		    cursor: pointer;
-		    transition: all 0.3s ease-in-out;
-		    text-transform: uppercase;
-		}
-		
-		button:hover {
-		    background: #A88F2E;
-		    transform: scale(1.05);
-		}
-		
-		::placeholder {
-		    color: rgba(255, 255, 255, 0.7);
-		}
-        
-    </style>
 </head>
 <body>
-    <nav class="navbar navbar-expand-lg">
-        <div class="container">
-            <a class="navbar-brand" href="/"><i class="fas fa-road"></i> RoadCare</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+    <!-- Navbar with Logo -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+        <div class="container-fluid">
+            <a class="navbar-brand d-flex align-items-center" href="/city_admin" style="margin-left:40px;">
+                <i class="fas fa-road text-primary fs-4 me-1"></i>
+                <span>Road</span><span style="color: #F9BB00;"><b>Care</b></span>
+            </a>
+            <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav me-auto">
-                    <li class="nav-item"><a class="nav-link" href="/city-admin">🏠 Home</a></li>
-                    <li class="nav-item"><a class="nav-link" href="/allocate">🔧 Allocate Resources</a></li>
+                    <li class="nav-item">
+                        <a class="nav-link px-3" href="/city_admin">
+                            <i class="fas fa-home"></i> Home
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link px-3 active" href="/allocate">
+                            <i class="fas fa-tools"></i> Allocate Resources
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link px-3" href="/show_resources">
+                            <i class="fa-solid fa-layer-group"></i> Show Resources
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link px-3" href="/contact">
+                            <i class="fas fa-envelope"></i> Contact
+                        </a>
+                    </li>
                 </ul>
-                <ul class="navbar-nav ms-auto">
-                    <li class="nav-item"><a class="nav-link btn btn-danger px-3" href="/logout">🚪 Logout</a></li>
-                </ul>
+                <div class="d-flex align-items-center">
+                    <div class="d-flex align-items-center me-4">
+                        <i class="fas fa-user-circle text-primary me-2 fs-5"></i>
+                        <span class="text-white">Welcome, 
+	                        <strong>
+	                        	<span th:text="${session.firstName}"></span>!
+	                        </strong>
+	                    </span>	                        
+                    </div>
+                    <a href="/logout" class="btn btn-outline-primary btn-sm text-light">
+                        <i class="fas fa-sign-out-alt me-1 text-light"></i> Logout
+                    </a>
+                    <a href="/delete" class="btn btn-outline-danger btn-sm text-light" style="margin-left: 10px; margin-right:40px;">
+                        <i class="fas fa-trash-alt me-1 text-light"></i> Delete Account
+                    </a>
+                </div>
             </div>
         </div>
     </nav>
-    <div class="main-content">
-        <div class="card">
-            <h2>Allocate Resources to Cities</h2>
-            <form th:action="@{/allocate}" method="POST" th:object="${resources}">
-                <div class="form-group">
-                    <label for="city">City</label>
-                    <input type="text" id="city" name="city" placeholder="Enter city" th:field="*{city}" required>
-                </div>
-                <div class="form-group">
-                    <label for="manpower">Manpower</label>
-                    <input type="number" id="manpower" name="manpower" min="1" placeholder="Enter manpower count" th:field="*{manpower}" required>
-                </div>
-                
-                <div id="resources-container">
-                    <div class="resource-entry">
-                        <label for="resource-name">Resource Name</label>
-                        <input type="text" class="resource-name" name="resourceName[]" placeholder="Enter resource name" required>
-                        <label for="resource-quantity">Quantity</label>
-                        <input type="number" class="resource-quantity" name="resourceQuantity[]" placeholder="Enter quantity" required>
-                    </div>
-                </div>                
-                <button type="button" id="add-resource">Add Another Resource</button>
-                
-                <div class="form-group">
-                    <label for="machines">Machines</label>
-                    <input type="number" id="machines" name="machines" min="1" placeholder="Enter machine count" th:field="*{machines}" required>
-                </div>
-                <button type="submit">Allocate</button>
-            </form>
-        </div>
+	<!--  -->
+	<div class="container my-5">
+	    <div class="card shadow-lg">
+	        <div class="card-header text-white" style="background-color: #343a40;">
+			    <h4 class="mb-0 text-center"><b>Allocate Resources</b></h4>
+			</div>
+
+	        <div class="card-body">
+	            <form action="/allocate_resources" method="post">
+	                <div class="row mb-3">
+					    <div class="col-md-6">
+					        <label for="state" class="form-label">State</label>
+					        <select class="form-select" id="state" name="state" required onchange="populateCities()">
+					            <option value="" disabled selected>Select State</option>
+					            <!-- All states -->
+					            <option value="Andhra Pradesh">Andhra Pradesh</option>
+					            <option value="Arunachal Pradesh">Arunachal Pradesh</option>
+					            <option value="Assam">Assam</option>
+					            <option value="Bihar">Bihar</option>
+					            <option value="Chhattisgarh">Chhattisgarh</option>
+					            <option value="Goa">Goa</option>
+					            <option value="Gujarat">Gujarat</option>
+					            <option value="Haryana">Haryana</option>
+					            <option value="Himachal Pradesh">Himachal Pradesh</option>
+					            <option value="Jharkhand">Jharkhand</option>
+					            <option value="Karnataka">Karnataka</option>
+					            <option value="Kerala">Kerala</option>
+					            <option value="Madhya Pradesh">Madhya Pradesh</option>
+					            <option value="Maharashtra">Maharashtra</option>
+					            <option value="Manipur">Manipur</option>
+					            <option value="Meghalaya">Meghalaya</option>
+					            <option value="Mizoram">Mizoram</option>
+					            <option value="Nagaland">Nagaland</option>
+					            <option value="Odisha">Odisha</option>
+					            <option value="Punjab">Punjab</option>
+					            <option value="Rajasthan">Rajasthan</option>
+					            <option value="Sikkim">Sikkim</option>
+					            <option value="Tamil Nadu">Tamil Nadu</option>
+					            <option value="Telangana">Telangana</option>
+					            <option value="Tripura">Tripura</option>
+					            <option value="Uttar Pradesh">Uttar Pradesh</option>
+					            <option value="Uttarakhand">Uttarakhand</option>
+					            <option value="West Bengal">West Bengal</option>
+					            <option value="Delhi">Delhi</option>
+					            <option value="Jammu and Kashmir">Jammu and Kashmir</option>
+					            <option value="Ladakh">Ladakh</option>
+					            <option value="Puducherry">Puducherry</option>
+					            <option value="Chandigarh">Chandigarh</option>
+					            <option value="Andaman and Nicobar Islands">Andaman and Nicobar Islands</option>
+					            <option value="Dadra and Nagar Haveli and Daman and Diu">Dadra and Nagar Haveli and Daman and Diu</option>
+					            <option value="Lakshadweep">Lakshadweep</option>
+					        </select>
+					    </div>
+					    <div class="col-md-6">
+					        <label for="city" class="form-label">City</label>
+					        <select class="form-select" id="city" name="city" required>
+					            <option value="" disabled selected>Select City</option>
+					        </select>
+					    </div>
+					</div>
+	
+	                <div class="row mb-3">
+	                    <div class="col-md-6">
+	                        <label for="manpower" class="form-label">Manpower</label>
+	                        <input type="number" class="form-control" id="manpower" name="manpower" required>
+	                    </div>
+	                    <div class="col-md-6">
+	                        <label for="machines" class="form-label">Machines</label>
+	                        <input type="number" class="form-control" id="machines" name="machines" required>
+	                    </div>
+	                </div>
+	
+	                <div id="resource-container" class="mb-4">
+	                    <label class="form-label">Resources</label>
+	                    <div class="row resource-row mb-2">
+	                        <div class="col-md-6">
+	                            <input type="text" class="form-control" name="resourceTypes[]" placeholder="Resource Type (e.g., Cement)">
+	                        </div>
+	                        <div class="col-md-4">
+	                            <input type="number" class="form-control" name="resourceQuantities[]" placeholder="Quantity">
+	                        </div>
+	                        <div class="col-md-2">
+	                            <button type="button" class="btn btn-danger remove-resource w-100">Remove</button>
+	                        </div>
+	                    </div>
+	                </div>
+	
+	                <button type="button" class="btn btn-secondary mb-3" id="add-resource">Add More Resources</button>
+	
+	                <div class="text-center">
+	                    <button type="submit" class="btn btn-success px-5">Submit Allocation</button>
+	                </div>
+	            </form>
+	        </div>
+	    </div>
+	</div>
+	
+	<footer class="bg-dark text-white py-5 mt-5">
+         <div class="container">
+             <div class="row">
+                 <div class="col-lg-4 mb-4">
+                     <h5 class="mb-3"><i class="fas fa-road me-2 text-warning"></i>RoadCare</h5>
+                     <p class="text-white">Making our roads safer, one repair at a time. Join us in our mission to improve community infrastructure.</p>
+                     <div class="mt-3">
+                         <a href="#" class="text-white me-3"><i class="fab fa-facebook-f"></i></a>
+                         <a href="#" class="text-white me-3"><i class="fab fa-twitter"></i></a>
+                         <a href="#" class="text-white me-3"><i class="fab fa-instagram"></i></a>
+                         <a href="#" class="text-white"><i class="fab fa-linkedin-in"></i></a>
+                     </div>
+                 </div>
+                 <div class="col-lg-2 col-md-6 mb-4">
+                     <h5 class="mb-3">Quick Links</h5>
+                     <ul class="list-unstyled">
+                         <li class="mb-2"><a href="/" class="text-white text-decoration-none">Home</a></li>
+                         <li class="mb-2"><a th:href="@{/contact}" class="text-white text-decoration-none">About Us</a></li>
+                         <li class="mb-2"><a th:href="@{/contact}" class="text-white text-decoration-none">Services</a></li>
+                         <li class="mb-2"><a th:href="@{/contact}" class="text-white text-decoration-none">FAQs</a></li>
+                     </ul>
+                 </div>
+                 <div class="col-lg-3 col-md-6 mb-4">
+                     <h5 class="mb-3">Contact Info</h5>
+                     <ul class="list-unstyled text-white">
+                         <li class="mb-2"><i class="fas fa-phone me-2"></i> +91 93372 30314</li>
+                         <li class="mb-2"><i class="fas fa-envelope me-2"></i> roadcare@gmail.com</li>
+                         <li class="mb-2"><i class="fas fa-map-marker-alt me-2"></i> NIT Rourkela</li>
+                     </ul>
+                 </div>
+             </div>
+         </div>                    
+   	</footer>
+    <div class="bg-dark text-center py-3">
+        <small class="text-white">© 2025 RoadCare™. All rights reserved.</small>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-	    document.getElementById('add-resource').addEventListener('click', function() {
-	        var container = document.getElementById('resources-container');
-	        var newResourceEntry = document.createElement('div');
-	        newResourceEntry.classList.add('resource-entry');
-	        newResourceEntry.innerHTML = `
-	            <label for="resource-name">Resource Name</label>
-	            <input type="text" class="resource-name" name="resourceName[]" placeholder="Enter resource name" required>
-	            <label for="resource-quantity">Quantity</label>
-	            <input type="number" class="resource-quantity" name="resourceQuantity[]" placeholder="Enter quantity" required>
-	        `;
-	        container.appendChild(newResourceEntry);
-	    });
-    </script>
+	    function initResourceHandlers() {
+	        document.getElementById("add-resource").addEventListener("click", function () {
+	            const container = document.getElementById("resource-container");
+	
+	            const newResource = document.createElement("div");
+	            newResource.classList.add("row", "resource-row", "mb-2");
+	
+	            newResource.innerHTML = `
+	                <div class="col-md-6">
+	                    <input type="text" class="form-control" name="resourceTypes[]" placeholder="Resource Type (e.g., Cement)">
+	                </div>
+	                <div class="col-md-4">
+	                    <input type="number" class="form-control" name="resourceQuantities[]" placeholder="Quantity">
+	                </div>
+	                <div class="col-md-2">
+	                    <button type="button" class="btn btn-danger remove-resource w-100">Remove</button>
+	                </div>
+	            `;
+	
+	            container.appendChild(newResource);
+	        });
+	
+	        document.addEventListener("click", function (e) {
+	            if (e.target && e.target.classList.contains("remove-resource")) {
+	                e.target.closest(".resource-row").remove();
+	            }
+	        });
+	    }	    
+	    
+	    function initStateCityDropdowns() {
+	        const stateCityMap = {
+	            "Andhra Pradesh": ["Visakhapatnam", "Vijayawada", "Guntur", "Nellore", "Tirupati"],
+	            "Arunachal Pradesh": ["Itanagar", "Naharlagun", "Pasighat", "Roing", "Ziro"],
+	            "Assam": ["Guwahati", "Dibrugarh", "Silchar", "Jorhat", "Tezpur"],
+	            "Bihar": ["Patna", "Gaya", "Bhagalpur", "Muzaffarpur", "Purnia"],
+	            "Chhattisgarh": ["Raipur", "Bilaspur", "Durg", "Korba", "Rajnandgaon"],
+	            "Goa": ["Panaji", "Margao", "Vasco da Gama", "Mapusa", "Ponda"],
+	            "Gujarat": ["Ahmedabad", "Surat", "Vadodara", "Rajkot", "Gandhinagar"],
+	            "Haryana": ["Gurugram", "Faridabad", "Panipat", "Ambala", "Karnal"],
+	            "Himachal Pradesh": ["Shimla", "Manali", "Dharamshala", "Mandi", "Solan"],
+	            "Jharkhand": ["Ranchi", "Jamshedpur", "Dhanbad", "Bokaro", "Hazaribagh"],
+	            "Karnataka": ["Bengaluru", "Mysuru", "Mangaluru", "Hubballi", "Belagavi"],
+	            "Kerala": ["Thiruvananthapuram", "Kochi", "Kozhikode", "Thrissur", "Kollam"],
+	            "Madhya Pradesh": ["Bhopal", "Indore", "Gwalior", "Jabalpur", "Ujjain"],
+	            "Maharashtra": ["Mumbai", "Pune", "Nagpur", "Nashik", "Thane"],
+	            "Manipur": ["Imphal", "Thoubal", "Bishnupur", "Kakching", "Ukhrul"],
+	            "Meghalaya": ["Shillong", "Tura", "Jowai", "Baghmara", "Nongpoh"],
+	            "Mizoram": ["Aizawl", "Lunglei", "Champhai", "Serchhip", "Kolasib"],
+	            "Nagaland": ["Kohima", "Dimapur", "Mokokchung", "Tuensang", "Zunheboto"],
+	            "Odisha": ["Bhubaneswar", "Cuttack", "Rourkela", "Sambalpur", "Puri"],
+	            "Punjab": ["Ludhiana", "Amritsar", "Jalandhar", "Patiala", "Bathinda"],
+	            "Rajasthan": ["Jaipur", "Jodhpur", "Udaipur", "Kota", "Ajmer"],
+	            "Sikkim": ["Gangtok", "Namchi", "Gyalshing", "Mangan", "Ravangla"],
+	            "Tamil Nadu": ["Chennai", "Coimbatore", "Madurai", "Salem", "Tiruchirappalli"],
+	            "Telangana": ["Hyderabad", "Warangal", "Nizamabad", "Karimnagar", "Khammam"],
+	            "Tripura": ["Agartala", "Dharmanagar", "Kailashahar", "Udaipur", "Belonia"],
+	            "Uttar Pradesh": ["Lucknow", "Kanpur", "Varanasi", "Agra", "Prayagraj"],
+	            "Uttarakhand": ["Dehradun", "Haridwar", "Haldwani", "Roorkee", "Nainital"],
+	            "West Bengal": ["Kolkata", "Howrah", "Asansol", "Siliguri", "Durgapur"],
+	            "Delhi": ["New Delhi", "Dwarka", "Rohini", "Saket", "Karol Bagh"],
+	            "Jammu and Kashmir": ["Srinagar", "Jammu", "Anantnag", "Baramulla", "Udhampur"],
+	            "Ladakh": ["Leh", "Kargil", "Diskit", "Nubra", "Padum"],
+	            "Puducherry": ["Puducherry", "Karaikal", "Mahe", "Yanam", "Oulgaret"],
+	            "Chandigarh": ["Chandigarh"],
+	            "Andaman and Nicobar Islands": ["Port Blair", "Havelock", "Diglipur", "Mayabunder", "Neil Island"],
+	            "Dadra and Nagar Haveli and Daman and Diu": ["Silvassa", "Daman", "Diu", "Amli", "Kachigam"],
+	            "Lakshadweep": ["Kavaratti", "Agatti", "Amini", "Minicoy", "Kalpeni"]
+	        };
+
+	        const stateSelect = document.getElementById("state");
+	        const citySelect = document.getElementById("city");
+
+	        stateSelect.addEventListener("change", () => {
+	            const selectedState = stateSelect.value;
+	            citySelect.innerHTML = '<option value="" disabled selected>Select City</option>';
+	            if (stateCityMap[selectedState]) {
+	                stateCityMap[selectedState].forEach(city => {
+	                    const option = document.createElement("option");
+	                    option.value = city;
+	                    option.textContent = city;
+	                    citySelect.appendChild(option);
+	                });
+	            }
+	        });
+	    }
+	    // Call the function on DOM ready
+	    document.addEventListener("DOMContentLoaded", initResourceHandlers);
+	    document.addEventListener("DOMContentLoaded", initStateCityDropdowns);
+	</script>
+    
 </body>
 </html>

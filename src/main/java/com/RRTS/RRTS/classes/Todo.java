@@ -38,11 +38,17 @@ public class Todo {
     private LocalDate completionDate;
     private List<String> images;
     private String email="";
-    private String manpower="";
+    private int manpower;
+    private String approved;
+    
+    private int estimated_cost;
+    private List<String> materials_used;
+    private String supervisor_name;
+    private String supervisor_email;
     
     @Field("resources")
     private Map<String, Integer> resources = new HashMap<>();
-    private String machines="";
+    private int machines;
     
     @DBRef
     private User user;  
@@ -53,6 +59,36 @@ public class Todo {
     	HIGH
     }           
     
+	public int getEstimated_cost() {
+		return estimated_cost;
+	}
+	public void setEstimated_cost(int estimated_cost) {
+		this.estimated_cost = estimated_cost;
+	}
+	public List<String> getMaterials_used() {
+		return materials_used;
+	}
+	public void setMaterials_used(List<String> materials_used) {
+		this.materials_used = materials_used;
+	}
+	public String getSupervisor_name() {
+		return supervisor_name;
+	}
+	public void setSupervisor_name(String supervisor_name) {
+		this.supervisor_name = supervisor_name;
+	}
+	public String getSupervisor_email() {
+		return supervisor_email;
+	}
+	public void setSupervisor_email(String supervisor_email) {
+		this.supervisor_email = supervisor_email;
+	}
+	public String getApproved() {
+		return approved;
+	}
+	public void setApproved(String approved) {
+		this.approved = approved;
+	}
 	public Map<String, Integer> getResources() {
 		return resources;
 	}
@@ -153,16 +189,16 @@ public class Todo {
 	public User getUser() {
 		return user;
 	}
-	public void setManpower(String manpower) {
+	public void setManpower(int manpower) {
 		this.manpower = manpower;
 	}
-	public void setMachines(String machines) {
+	public void setMachines(int machines) {
 		this.machines = machines;
 	}
-	public String getManpower() {
+	public int getManpower() {
 		return manpower;
 	}
-	public String getMachines() {
+	public int getMachines() {
 		return machines;
 	}
     

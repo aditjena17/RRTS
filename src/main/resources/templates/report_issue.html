@@ -10,6 +10,7 @@
     <style>
 	    body {
 	        padding-top: 30px; /* Adjust based on navbar height */
+	        margin-bottom:0;
 	    }		
 	
 	    /* Stylish Logout Button */
@@ -31,7 +32,7 @@
         <div class="container">
             <a class="navbar-brand d-flex align-items-center" href="/">
                 <i class="fas fa-road text-primary fs-4 me-2"></i>
-                <span class="fw-bold">RoadCare</span>
+                <span>Road</span><span style="color: #F9BB00;"><b>Care</b></span>
             </a>
             <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                 <span class="navbar-toggler-icon"></span>
@@ -60,12 +61,16 @@
                     </li>
                 </ul>
                 <div class="d-flex align-items-center">
-                    <div class="d-flex align-items-center me-3">
+                    <div class="d-flex align-items-center me-4">
                         <i class="fas fa-user-circle text-primary me-2 fs-5"></i>
-                        <span class="text-white">Welcome, <span th:text="${session.email}"></span>!</span>
+                        <span class="text-white">Welcome, 
+                        <strong><span th:text="${session.firstName}"></span></strong>!</span>
                     </div>
                     <a href="/logout" class="btn btn-outline-primary btn-sm text-light">
                         <i class="fas fa-sign-out-alt me-1 text-light"></i> Logout
+                    </a>
+                    <a href="/delete" class="btn btn-outline-danger btn-sm text-light" style="margin-left: 10px;">
+                        <i class="fas fa-trash-alt me-1 text-light"></i> Delete Account
                     </a>
                 </div>
             </div>
@@ -98,48 +103,46 @@
 							    	<!-- State Dropdown -->
 							        <div class="col-md-6">
 							            <label for="state" class="form-label">State</label>
-							            <select class="form-select" id="state" name="state" required>
+							            <select class="form-select" id="state" name="state" required onchange="populateCities()">
 							                <option value="" selected disabled>Select State</option>
-							                <option value="AP">Andhra Pradesh</option>
-							                <option value="AR">Arunachal Pradesh</option>
-							                <option value="AS">Assam</option>
-							                <option value="BR">Bihar</option>
-							                <option value="CT">Chhattisgarh</option>
-							                <option value="GA">Goa</option>
-							                <option value="GJ">Gujarat</option>
-							                <option value="HR">Haryana</option>
-							                <option value="HP">Himachal Pradesh</option>
-							                <option value="JH">Jharkhand</option>
-							                <option value="KA">Karnataka</option>
-							                <option value="KL">Kerala</option>
-							                <option value="MP">Madhya Pradesh</option>
-							                <option value="MH">Maharashtra</option>
-							                <option value="MN">Manipur</option>
-							                <option value="ML">Meghalaya</option>
-							                <option value="MZ">Mizoram</option>
-							                <option value="NL">Nagaland</option>
-							                <option value="OR">Odisha</option>
-							                <option value="PB">Punjab</option>
-							                <option value="RJ">Rajasthan</option>
-							                <option value="SK">Sikkim</option>
-							                <option value="TN">Tamil Nadu</option>
-							                <option value="TG">Telangana</option>
-							                <option value="TR">Tripura</option>
-							                <option value="UP">Uttar Pradesh</option>
-							                <option value="UT">Uttarakhand</option>
-							                <option value="WB">West Bengal</option>
+							                <option value="Andhra Pradesh">Andhra Pradesh</option>
+							                <option value="Arunchal Pradesh">Arunachal Pradesh</option>
+							                <option value="Assam">Assam</option>
+							                <option value="Bihar">Bihar</option>
+							                <option value="Chhattisgarh">Chhattisgarh</option>
+							                <option value="Goa">Goa</option>
+							                <option value="Gujarat">Gujarat</option>
+							                <option value="Haryana">Haryana</option>
+							                <option value="Himachal Pradesh">Himachal Pradesh</option>
+							                <option value="Jharkhand">Jharkhand</option>
+							                <option value="Karnataka">Karnataka</option>
+							                <option value="Kerala">Kerala</option>
+							                <option value="Madhya Pradesh">Madhya Pradesh</option>
+							                <option value="Maharashtra">Maharashtra</option>
+							                <option value="Manipur">Manipur</option>
+							                <option value="Meghalaya">Meghalaya</option>
+							                <option value="Mizoram">Mizoram</option>
+							                <option value="Nagaland">Nagaland</option>
+							                <option value="Odisha">Odisha</option>
+							                <option value="Punjab">Punjab</option>
+							                <option value="Rajasthan">Rajasthan</option>
+							                <option value="Sikkim">Sikkim</option>
+							                <option value="Tamil Nadu">Tamil Nadu</option>
+							                <option value="Telangana">Telangana</option>
+							                <option value="Tripura">Tripura</option>
+							                <option value="Uttar Pradesh">Uttar Pradesh</option>
+							                <option value="Uttarakhand">Uttarakhand</option>
+							                <option value="West Bengal">West Bengal</option>
 							            </select>
 							        </div>
 							    	
 							        <!-- City Input -->
 							        <div class="col-md-6">
-							            <label for="city" class="form-label">City</label>
-							            <div class="input-group">
-							                <span class="input-group-text"><i class="fas fa-city"></i></span>
-							                <input type="text" class="form-control" id="city" name="city" th:field="*{city}" required 
-							                    placeholder="Enter city name">
-							            </div>
-							        </div>
+									    <label for="city" class="form-label">City</label>
+									    <select class="form-select" id="city" name="city" required>
+									        <option value="" selected disabled>Select City</option>
+									    </select>
+									</div>
 							    </div>
 							</div>
 
@@ -212,7 +215,92 @@
             </div>
         </div>
     </div>
-
+	<footer class="bg-dark text-white py-5 mt-5">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-4 mb-4">
+                        <h5 class="mb-3"><i class="fas fa-road me-2 text-warning"></i>RoadCare</h5>
+                        <p class="text-white">Making our roads safer, one repair at a time. Join us in our mission to improve community infrastructure.</p>
+                        <div class="mt-3">
+                            <a href="#" class="text-white me-3"><i class="fab fa-facebook-f"></i></a>
+                            <a href="#" class="text-white me-3"><i class="fab fa-twitter"></i></a>
+                            <a href="#" class="text-white me-3"><i class="fab fa-instagram"></i></a>
+                            <a href="#" class="text-white"><i class="fab fa-linkedin-in"></i></a>
+                        </div>
+                    </div>
+                    <div class="col-lg-2 col-md-6 mb-4">
+                        <h5 class="mb-3">Quick Links</h5>
+                        <ul class="list-unstyled">
+                            <li class="mb-2"><a href="/" class="text-white text-decoration-none">Home</a></li>
+                            <li class="mb-2"><a th:href="@{/contact}" class="text-white text-decoration-none">About Us</a></li>
+                            <li class="mb-2"><a th:href="@{/contact}" class="text-white text-decoration-none">Services</a></li>
+                            <li class="mb-2"><a th:href="@{/contact}" class="text-white text-decoration-none">FAQs</a></li>
+                        </ul>
+                    </div>
+                    <div class="col-lg-3 col-md-6 mb-4">
+                        <h5 class="mb-3">Contact Info</h5>
+                        <ul class="list-unstyled text-white">
+                            <li class="mb-2"><i class="fas fa-phone me-2"></i> +91 93372 30314</li>
+                            <li class="mb-2"><i class="fas fa-envelope me-2"></i> roadcare@gmail.com</li>
+                            <li class="mb-2"><i class="fas fa-map-marker-alt me-2"></i> NIT Rourkela</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>                    
+    	</footer>
+	    <div class="bg-dark text-center py-3">
+	        <small class="text-white">© 2025 RoadCare™. All rights reserved.</small>
+	    </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+	    const stateCityMap = {
+	        "Andhra Pradesh": ["Visakhapatnam", "Vijayawada", "Guntur", "Nellore", "Kurnool"],
+	        "Arunachal Pradesh": ["Itanagar", "Naharlagun", "Pasighat", "Roing", "Ziro"],
+	        "Assam": ["Guwahati", "Silchar", "Dibrugarh", "Jorhat", "Tezpur"],
+	        "Bihar": ["Patna", "Gaya", "Muzaffarpur", "Bhagalpur", "Darbhanga"],
+	        "Chhattisgarh": ["Raipur", "Bilaspur", "Durg", "Korba", "Rajnandgaon"],
+	        "Goa": ["Panaji", "Margao", "Vasco da Gama", "Mapusa", "Ponda"],
+	        "Gujarat": ["Ahmedabad", "Surat", "Vadodara", "Rajkot", "Bhavnagar"],
+	        "Haryana": ["Gurugram", "Faridabad", "Panipat", "Ambala", "Hisar"],
+	        "Himachal Pradesh": ["Shimla", "Mandi", "Dharamshala", "Solan", "Hamirpur"],
+	        "Jharkhand": ["Ranchi", "Jamshedpur", "Dhanbad", "Bokaro", "Hazaribagh"],
+	        "Karnataka": ["Bengaluru", "Mysuru", "Hubli", "Mangalore", "Belgaum"],
+	        "Kerala": ["Thiruvananthapuram", "Kochi", "Kozhikode", "Thrissur", "Kollam"],
+	        "Madhya Pradesh": ["Bhopal", "Indore", "Gwalior", "Jabalpur", "Ujjain"],
+	        "Maharashtra": ["Mumbai", "Pune", "Nagpur", "Nashik", "Aurangabad"],
+	        "Manipur": ["Imphal", "Thoubal", "Kakching", "Bishnupur", "Churachandpur"],
+	        "Meghalaya": ["Shillong", "Tura", "Nongstoin", "Baghmara", "Williamnagar"],
+	        "Mizoram": ["Aizawl", "Lunglei", "Champhai", "Serchhip", "Kolasib"],
+	        "Nagaland": ["Kohima", "Dimapur", "Mokokchung", "Tuensang", "Wokha"],
+	        "Odisha": ["Bhubaneswar", "Cuttack", "Rourkela", "Sambalpur", "Puri"],
+	        "Punjab": ["Ludhiana", "Amritsar", "Jalandhar", "Patiala", "Bathinda"],
+	        "Rajasthan": ["Jaipur", "Jodhpur", "Udaipur", "Kota", "Ajmer"],
+	        "Sikkim": ["Gangtok", "Namchi", "Mangan", "Gyalshing", "Rangpo"],
+	        "Tamil Nadu": ["Chennai", "Coimbatore", "Madurai", "Tiruchirapalli", "Salem"],
+	        "Telangana": ["Hyderabad", "Warangal", "Nizamabad", "Karimnagar", "Khammam"],
+	        "Tripura": ["Agartala", "Udaipur", "Dharmanagar", "Kailashahar", "Belonia"],
+	        "Uttar Pradesh": ["Lucknow", "Kanpur", "Ghaziabad", "Varanasi", "Agra"],
+	        "Uttarakhand": ["Dehradun", "Haridwar", "Roorkee", "Haldwani", "Nainital"],
+	        "West Bengal": ["Kolkata", "Howrah", "Durgapur", "Asansol", "Siliguri"]
+	    };
+	
+	    function populateCities() {
+	        const stateSelect = document.getElementById("state");
+	        const citySelect = document.getElementById("city");
+	        const selectedState = stateSelect.value;
+	
+	        // Clear previous cities
+	        citySelect.innerHTML = `<option value="" selected disabled>Select City</option>`;
+	
+	        const cities = stateCityMap[selectedState] || [];
+	
+	        cities.forEach(city => {
+	            const option = document.createElement("option");
+	            option.value = city;
+	            option.textContent = city;
+	            citySelect.appendChild(option);
+	        });
+	    }
+	</script>
 </body>
 </html>
