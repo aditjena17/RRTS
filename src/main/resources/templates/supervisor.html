@@ -102,6 +102,30 @@
 	    .btn-approval:active {
 	        transform: scale(0.95);
 	    }
+	    .severity {
+		    font-weight: bold;
+		    padding: 3px 8px;
+		    border-radius: 5px;
+		}
+	    .severity.high {
+		    background-color: red; /* red */
+		    color: white;
+		  }
+		
+		  .severity.medium {
+		    background-color: #EE6E01; /* orange */
+		    color: white;
+		  }
+		
+		  .severity.low {
+		    background-color: green; /* green */
+		    color: white;
+		  }
+		
+		  .severity.default {
+		    background-color: gray;
+		    color: white;
+		  }
     </style>
 </head>
 <body>
@@ -291,7 +315,7 @@
 	            row.innerHTML = `
 	                <td>${todo.city}</td>
 	                <td>${todo.issueType}</td>
-	                <td>${todo.severity}</td>
+	                <td><span class="severity ${todo.severity.toLowerCase().replace(" ", "-")}">${todo.severity}</span></td>
 	                
 	                <td>
 		                <select id="status-${todo.id}" class="form-select form-select-sm" style="width: 120px;" onchange="updateStatus('${todo.id}')" ${todo.approved === 'Rejected' ? 'disabled' : ''}>
