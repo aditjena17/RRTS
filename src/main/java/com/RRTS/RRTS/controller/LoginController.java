@@ -66,26 +66,26 @@ public class LoginController {
 	            Resident resident = new Resident();
 	            resident.setRole(role);
 	            session.setAttribute("user", resident);
-	            break;
+	            return "signup";
 	        case "supervisor":
 	            Supervisor supervisor = new Supervisor();
 	            supervisor.setRole(role);
 	            session.setAttribute("user", supervisor);
-	            break;
+	            return "signup";
 	        case "city_admin":
 	            CityAdmin cityAdmin = new CityAdmin();
 	            cityAdmin.setRole(role);
 	            session.setAttribute("user", cityAdmin);
-	            break;
+	            return "signup";
 	        case "mayor":
 	            Mayor mayor = new Mayor();
 	            mayor.setRole(role);
 	            session.setAttribute("user", mayor);
-	            break;
+	            return "redirect:/https://rrts-mayor.onrender.com/auth/signup";
 	        default:
 	            session.setAttribute("user", new User());
+	            return "signup";
 		}
-		return "signup";
 	}
 	
 	@RequestMapping(value = "/signup", method = RequestMethod.GET)
@@ -121,7 +121,7 @@ public class LoginController {
 			case "mayor":
 				Mayor mayor = new Mayor(user);
 				mayorRepository.save(mayor);
-				break;
+				return "redirect:/https://rrts-mayor.onrender.com/auth/signup";
 			default:
 				userRepository.save(user);
 		}
@@ -159,18 +159,22 @@ public class LoginController {
             Resident resident = new Resident();
             resident.setRole(role);
             map.addAttribute("user", resident);
+            break;
         case "supervisor":
             Supervisor supervisor = new Supervisor();
             supervisor.setRole(role);
             map.addAttribute("user", supervisor);
+            break;
         case "city_admin":
             CityAdmin cityAdmin = new CityAdmin();
             cityAdmin.setRole(role);
             map.addAttribute("user", cityAdmin);
+            break;
         case "mayor":
             Mayor mayor = new Mayor();
             mayor.setRole(role);
             map.addAttribute("user", mayor);
+            return "redirect:/https://rrts-mayor.onrender.com/auth/signup";
 		}
 		return "login";
 	}
@@ -207,7 +211,7 @@ public class LoginController {
                 case "cityadmin":
                     return "redirect:/city_admin";
                 case "mayor":
-                    return "mayor";
+                	return "redirect:/https://rrts-mayor.onrender.com/auth/signup";
                 default:
                     return "home";
             }
